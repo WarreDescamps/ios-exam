@@ -11,8 +11,17 @@ import Firebase
 struct ContentView: View {
     @State private var email = ""
     @State private var password = ""
+    @State private var isLoggedIn = false
     
     var body: some View {
+        if isLoggedIn {
+            
+        } else {
+            content
+        }
+    }
+    
+    var content: some View {
         ZStack {
             Color.black
             RoundedRectangle(cornerRadius: 30, style: .continuous)
@@ -95,6 +104,7 @@ struct ContentView: View {
         Auth.auth().signIn(withEmail: email, link: password) { result, error in
             if error != nil {
                 print(error!.localizedDescription)
+                isLoggedIn.toggle()
             }
         }
     }
