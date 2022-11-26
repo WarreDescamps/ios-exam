@@ -17,6 +17,7 @@
 		606DEB122926C04F0062C9BC /* IOS_ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DEB112926C04F0062C9BC /* IOS_ProjectTests.swift */; };
 		606DEB1C2926C04F0062C9BC /* IOS_ProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DEB1B2926C04F0062C9BC /* IOS_ProjectUITests.swift */; };
 		606DEB1E2926C04F0062C9BC /* IOS_ProjectUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DEB1D2926C04F0062C9BC /* IOS_ProjectUITestsLaunchTests.swift */; };
+		6979EAF92932C1DA0062C9BB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6979EAF82932C1DA0062C9BB /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		606DEB172926C04F0062C9BC /* IOS-ProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "IOS-ProjectUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		606DEB1B2926C04F0062C9BC /* IOS_ProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOS_ProjectUITests.swift; sourceTree = "<group>"; };
 		606DEB1D2926C04F0062C9BC /* IOS_ProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOS_ProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		6979EAF82932C1DA0062C9BB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				606DEB002926C04D0062C9BC /* IOS_ProjectApp.swift */,
 				606DEB022926C04D0062C9BC /* ContentView.swift */,
 				606DEB042926C04F0062C9BC /* Assets.xcassets */,
+				6979EAF82932C1DA0062C9BB /* GoogleService-Info.plist */,
 				606DEB062926C04F0062C9BC /* Preview Content */,
 			);
 			path = "IOS-Project";
@@ -255,6 +258,7 @@
 			files = (
 				606DEB082926C04F0062C9BC /* Preview Assets.xcassets in Resources */,
 				606DEB052926C04F0062C9BC /* Assets.xcassets in Resources */,
+				6979EAF92932C1DA0062C9BB /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
