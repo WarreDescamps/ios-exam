@@ -10,6 +10,7 @@ import Firebase
 
 @main
 struct IOS_ProjectApp: App {
+    @StateObject var mangaManager = MangaManager()
     
     init() {
         FirebaseApp.configure()
@@ -18,6 +19,7 @@ struct IOS_ProjectApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(mangaManager)
         }
     }
 }

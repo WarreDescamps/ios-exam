@@ -8,13 +8,25 @@
 import SwiftUI
 
 struct LibraryView: View {
+    @EnvironmentObject var mangaManager: MangaManager
+    let userId: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List(mangaManager.manga) { manga in
+            AsyncImage(url: URL(string: manga.coverUrl))
+            Text(manga.title)
+        }
+        .onAppear { initData() }
+    }
+    
+    private func initData() {
+        mangaManager.getManga(userId: userId)
     }
 }
 
 struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
-        LibraryView()
+        LibraryView(userId: "w5sWxDHUmHddIQNnAQy5JcGjNRP2")
+            .environmentObject(MangaManager())
     }
 }
