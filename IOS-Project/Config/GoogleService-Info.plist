@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>283672026344-4lgu0667iufb4cbqeq8di4v9kqbjr0hm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.283672026344-4lgu0667iufb4cbqeq8di4v9kqbjr0hm</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB4dYrC0x-zlzuHC7vXsh_nMh8sVoSHY58</string>
+	<key>GCM_SENDER_ID</key>
+	<string>283672026344</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>be.vives.IOS-Project</string>
+	<key>PROJECT_ID</key>
+	<string>ios-app-f5d94</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ios-app-f5d94.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:283672026344:ios:5b1a5c07f7303070f83d5d</string>
+</dict>
+</plist>
