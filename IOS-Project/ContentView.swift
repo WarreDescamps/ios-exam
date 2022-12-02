@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
+    @State private var userId = ""
     @State private var email = ""
     @State private var password = ""
     @State private var isLoggedIn = false
@@ -87,6 +88,14 @@ struct ContentView: View {
                 .offset(y: 110)
             }
             .frame(width: 350)
+            .onAppear {
+                Auth.auth().addStateDidChangeListener { auth, user in
+                    if user != nil {
+                        userId = user?.uid as? String ?? ""
+                        isLoggedIn.toggle()
+                    }
+                }
+            }
             
             
 //            TabView {
