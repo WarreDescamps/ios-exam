@@ -17,6 +17,8 @@
 		606DEB122926C04F0062C9BC /* IOS_ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DEB112926C04F0062C9BC /* IOS_ProjectTests.swift */; };
 		606DEB1C2926C04F0062C9BC /* IOS_ProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DEB1B2926C04F0062C9BC /* IOS_ProjectUITests.swift */; };
 		606DEB1E2926C04F0062C9BC /* IOS_ProjectUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DEB1D2926C04F0062C9BC /* IOS_ProjectUITestsLaunchTests.swift */; };
+		69765D96293A977200F662FC /* Manga.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69765D95293A977200F662FC /* Manga.swift */; };
+		69765D99293A98C600F662FC /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69765D98293A98C600F662FC /* DataManager.swift */; };
 		6979EAF92932C1DA0062C9BB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6979EAF82932C1DA0062C9BB /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,8 @@
 		606DEB1B2926C04F0062C9BC /* IOS_ProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOS_ProjectUITests.swift; sourceTree = "<group>"; };
 		606DEB1D2926C04F0062C9BC /* IOS_ProjectUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOS_ProjectUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		69765D93293A8FAB00F662FC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		69765D95293A977200F662FC /* Manga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manga.swift; sourceTree = "<group>"; };
+		69765D98293A98C600F662FC /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		6979EAF82932C1DA0062C9BB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +115,8 @@
 		606DEAFF2926C04D0062C9BC /* IOS-Project */ = {
 			isa = PBXGroup;
 			children = (
+				69765D97293A98B100F662FC /* Services */,
+				69765D94293A976400F662FC /* Models */,
 				69765D92293A8F8D00F662FC /* Config */,
 				3E285EFF2930FF3E003D0DA4 /* Views */,
 				606DEB002926C04D0062C9BC /* IOS_ProjectApp.swift */,
@@ -153,6 +159,22 @@
 				69765D93293A8FAB00F662FC /* GoogleService-Info.plist */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		69765D94293A976400F662FC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				69765D95293A977200F662FC /* Manga.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		69765D97293A98B100F662FC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				69765D98293A98C600F662FC /* DataManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,7 +316,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				606DEB032926C04D0062C9BC /* ContentView.swift in Sources */,
+				69765D99293A98C600F662FC /* DataManager.swift in Sources */,
 				3E285F012930FF63003D0DA4 /* LibraryView.swift in Sources */,
+				69765D96293A977200F662FC /* Manga.swift in Sources */,
 				606DEB012926C04D0062C9BC /* IOS_ProjectApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
