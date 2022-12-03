@@ -9,6 +9,8 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
+    @EnvironmentObject var mangaManager: MangaManager
+    
     @State private var userId = ""
     @State private var email = ""
     @State private var password = ""
@@ -16,7 +18,13 @@ struct ContentView: View {
     
     var body: some View {
         if isLoggedIn {
-            
+            TabView {
+                LibraryView(userId: userId)
+                    .environmentObject(mangaManager)
+                    .tabItem(){
+                        Text("Library")
+                    }
+            }
         } else {
             content
         }
@@ -96,15 +104,6 @@ struct ContentView: View {
                     }
                 }
             }
-            
-            
-//            TabView {
-//                LibraryView()
-//                    .tabItem(){
-//                        Text("Library")
-//                    }
-//
-//            }
         }
         .ignoresSafeArea()
     }
@@ -130,6 +129,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(MangaManager())
     }
 }
 
