@@ -12,9 +12,18 @@ struct LibraryView: View {
     let userId: String
     
     var body: some View {
-        List(mangaManager.manga) { manga in
-            AsyncImage(url: URL(string: manga.coverUrl))
-            Text(manga.title)
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 5) {
+                ForEach(mangaManager.manga, id: \.id) { manga in
+                    HStack {
+                        Image(manga.coverUrl)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 90)
+                        Text(manga.title)
+                    }
+                }
+            }
         }
         .onAppear { initData() }
     }
