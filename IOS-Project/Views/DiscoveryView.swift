@@ -10,27 +10,29 @@ import SwiftUI
 struct DiscoveryView: View {
     @EnvironmentObject var mangadex: MangadexSdk
     @State var userId: String
-    @State var query: String? = nil
+    @State private var query: String = ""
     
     var body: some View {
-        ScrollView {
-            
-            
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 5) {
-                ForEach(mangadex.manga, id: \.id) { manga in
-                    ZStack {
-                        AsyncImage(url: URL(string: manga.coverUrl),
-                                   content: { image in image.resizable() },
-                                   placeholder: { Color.gray })
-                            .aspectRatio(contentMode: .fit)
-                            .frame(height: 90)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                        Text(manga.title)
+        NavigationStack {
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 5) {
+                    ForEach(mangadex.manga, id: \.id) { manga in
+                        ZStack {
+                            AsyncImage(url: URL(string: manga.coverUrl),
+                                       content: { image in image.resizable() },
+                                       placeholder: { Color.gray })
+                                .aspectRatio(contentMode: .fit)
+                                .frame(height: 90)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            Text(manga.title)
+                        }
                     }
                 }
             }
         }
-        .onAppear { initData() }
+        .searchable(text: $query)
+        .onAppear(perform: initData)
+        .onSubmit(of: .search, initData)
     }
     
     private func initData() {
