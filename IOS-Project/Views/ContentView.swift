@@ -21,20 +21,20 @@ struct ContentView: View {
             TabView {
                 LibraryView(userId: userId)
                     .environmentObject(mangaManager)
-                    .tabItem(){
+                    .tabItem() {
                         Text("Library")
                     }
             }
         } else {
-            content
+            authContent
         }
     }
     
-    var content: some View {
+    var authContent: some View {
         ZStack {
             Color.black
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .foregroundStyle(.linearGradient(colors: [.pink, .red], startPoint: .topTrailing, endPoint: .bottomTrailing))
+            RoundedRectangle(cornerRadius: 30, style: .circular)
+                .foregroundStyle(.linearGradient(colors: [.purple, .cyan], startPoint: .topTrailing, endPoint: .bottomTrailing))
                 .frame(width: 1000, height: 400)
                 .rotationEffect(.degrees(135))
                 .offset(y: -350)
@@ -43,7 +43,7 @@ struct ContentView: View {
                 Text("Welcome")
                     .foregroundColor(.white)
                     .font(.system(size: 40, weight: .bold, design: .rounded))
-                    .offset(x: -100, y: -100)
+                    .offset(x: -90, y: -90)
                 
                 TextField("Email", text: $email)
                     .foregroundColor(.white)
@@ -78,7 +78,7 @@ struct ContentView: View {
                         .bold()
                         .frame(width: 200, height: 40)
                         .background(RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .fill(.linearGradient(colors: [.pink, .red], startPoint: .top, endPoint: .bottomTrailing))
+                            .fill(.linearGradient(colors: [.purple, .cyan], startPoint: .top, endPoint: .bottomTrailing))
                         )
                         .foregroundColor(.white)
                 }
