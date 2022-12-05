@@ -11,6 +11,7 @@ import Firebase
 @main
 struct IOS_ProjectApp: App {
     @StateObject var mangaManager = MangaManager()
+    @StateObject var mangadex = MangadexSdk()
     
     init() {
         FirebaseApp.configure()
@@ -20,6 +21,7 @@ struct IOS_ProjectApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(mangaManager)
+                .environmentObject(mangadex)
         }
     }
 }

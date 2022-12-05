@@ -1,21 +1,24 @@
 //
-//  LibraryView.swift
+//  DiscoveryView.swift
 //  IOS-Project
 //
-//  Created by docent on 25/11/2022.
+//  Created by Warre Descamps on 05/12/2022.
 //
 
 import SwiftUI
 
-struct LibraryView: View {
-    @EnvironmentObject var mangaManager: MangaManager
+struct DiscoveryView: View {
+    @EnvironmentObject var mangadex: MangadexSdk
     @State var userId: String
+    @State var query: String? = nil
     
     var body: some View {
         ScrollView {
+            
+            
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 5) {
-                ForEach(mangaManager.manga, id: \.id) { manga in
-                    HStack {
+                ForEach(mangadex.manga, id: \.id) { manga in
+                    ZStack {
                         AsyncImage(url: URL(string: manga.coverUrl),
                                    content: { image in image.resizable() },
                                    placeholder: { Color.gray })
@@ -31,13 +34,13 @@ struct LibraryView: View {
     }
     
     private func initData() {
-        mangaManager.getManga(userId: userId)
+        mangadex.getManga(query: query)
     }
 }
 
-struct LibraryView_Previews: PreviewProvider {
+struct DiscoveryView_Previews: PreviewProvider {
     static var previews: some View {
-        LibraryView(userId: "w5sWxDHUmHddIQNnAQy5JcGjNRP2")
-            .environmentObject(MangaManager())
+        DiscoveryView(userId: "w5sWxDHUmHddIQNnAQy5JcGjNRP2")
+            .environmentObject(MangadexSdk())
     }
 }

@@ -10,6 +10,7 @@ import Firebase
 
 struct ContentView: View {
     @EnvironmentObject var mangaManager: MangaManager
+    @EnvironmentObject var mangadex: MangadexSdk
     
     @State private var userId = ""
     @State private var email = ""
@@ -23,6 +24,11 @@ struct ContentView: View {
                     .environmentObject(mangaManager)
                     .tabItem() {
                         Text("Library")
+                    }
+                DiscoveryView(userId: userId)
+                    .environmentObject(mangadex)
+                    .tabItem() {
+                        Text("Discovery")
                     }
             }
         } else {
@@ -130,6 +136,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environmentObject(MangaManager())
+            .environmentObject(MangadexSdk())
     }
 }
 
