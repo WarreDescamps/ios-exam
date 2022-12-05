@@ -20,15 +20,15 @@ struct ContentView: View {
     var body: some View {
         if isLoggedIn {
             TabView {
-                LibraryView(userId: userId)
-                    .environmentObject(mangaManager)
-                    .tabItem() {
-                        Text("Library")
-                    }
                 DiscoveryView(userId: userId)
                     .environmentObject(mangadex)
                     .tabItem() {
                         Text("Discovery")
+                    }
+                LibraryView(userId: userId)
+                    .environmentObject(mangaManager)
+                    .tabItem() {
+                        Text("Library")
                     }
             }
         } else {
