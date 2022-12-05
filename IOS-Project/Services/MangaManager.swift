@@ -130,7 +130,9 @@ class MangaManager: ObservableObject {
             db.collection("UserManga").document(id).delete() { error in
                 if error == nil {
                     DispatchQueue.main.async {
-                        self.getManga(userId: userId)
+                        self.manga.removeAll { manga in
+                            return manga.id == mangaId
+                        }
                     }
                 }
                 else {
