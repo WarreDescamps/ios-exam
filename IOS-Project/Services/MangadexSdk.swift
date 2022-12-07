@@ -44,10 +44,12 @@ class MangadexSdk: ObservableObject {
                     switch result {
                     case .success(let success):
                         for result in success.data {
-                            self.appendWithCoverUrl(manga: Manga(id: result.id,
-                                                                 title: result.attributes.title.en,
-                                                                 description: result.attributes.description.en,
-                                                                 coverUrl: "https://uploads.mangadex.org/covers/\(result.id)/"))
+                            if self.manga.allSatisfy({ $0.id != result.id }) {
+                                self.appendWithCoverUrl(manga: Manga(id: result.id,
+                                                                     title: result.attributes.title.en,
+                                                                     description: result.attributes.description.en,
+                                                                     coverUrl: "https://mangadex.org/covers/\(result.id)/"))
+                            }
                     }
                     case .failure(let failure):
                         print(failure.localizedDescription)
