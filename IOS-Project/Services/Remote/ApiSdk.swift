@@ -45,7 +45,7 @@ extension Api {
                             }
                             catch {
                                 print("Decoding error: \(error)")
-                                callback?(.failure(.generic(reason: "Could not decode dat: \(error.localizedDescription)")))
+                                callback?(.failure(.generic(reason: "Could not decode data: \(error.localizedDescription)")))
                             }
                         }
                     }
@@ -56,7 +56,7 @@ extension Api {
         func get<Response>(_ endpoint: Types.Endpoint,
                            then callback: ((Result<Response, Types.Error>) -> Void)? = nil
         ) where Response: Decodable {
-            let body: Types.Request.Empty?  = nil
+            let body: Types.Request.Empty? = nil
             fetch(endpoint, method: .get, body: body) { result in
                 callback?(result)
             }
