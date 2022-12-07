@@ -69,7 +69,7 @@ extension Api {
         }
         
         enum Endpoint {
-            case manga(query: String?)
+            case manga(query: String?, page: Int)
             case cover(id: String)
             
             var url: URL {
@@ -78,10 +78,15 @@ extension Api {
                 components.scheme = "https"
                 
                 switch self {
-                case .manga(let query):
+                case .manga(let query, let page):
+                    let pageLimit = 20
                     components.path = "/manga"
+                    components.queryItems = [
+                        URLQueryItem(name: "limit", value: "\(pageLimit)"),
+                        URLQueryItem(name: "offset", value: "\(page * pageLimit)")
+                    ]
                     if query != nil {
-                        components.queryItems = [URLQueryItem(name: "title", value: query)]
+                        components.queryItems?.append(URLQueryItem(name: "title", value: query))
                     }
                 case .cover(let id):
                     components.path = "/cover"

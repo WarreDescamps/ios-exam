@@ -9,6 +9,8 @@ import SwiftUI
 
 class MangadexSdk: ObservableObject {
     @Published var manga = [Manga]()
+    @State private var page = 0
+    @State private var lastQuery: String? = nil
     
     init() {
         getManga(query: nil)
@@ -34,11 +36,10 @@ class MangadexSdk: ObservableObject {
                 }
             }
     }
-        
-    func getManga(query: String?) {
-        manga.removeAll()
+    
+    private func fetchManga(query: String?){
         Api.Sdk.shared
-            .get(.manga(query: query)) { (result: Result<Api.Types.Response.MangaSearch, Api.Types.Error>) in
+            .get(.manga(query: query, page: page)) { (result: Result<Api.Types.Response.MangaSearch, Api.Types.Error>) in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let success):
@@ -53,5 +54,17 @@ class MangadexSdk: ObservableObject {
                     }
                 }
             }
+    }
+    
+    func getManga(query: String?) {
+        page = 0
+        lastQuery = query
+        manga.removeAll()
+        fetchManga(query: query)
+    }
+    
+    func loadNextPage() {
+        page += 1
+        fetchManga(query: lastQuery)
     }
 }
