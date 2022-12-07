@@ -14,7 +14,7 @@ extension Api {
         enum Response {
             
             struct MangaSearch: Decodable {
-                var result: Result
+                var result: String
                 var data:  [Data]
                 
                 struct Data: Decodable{
@@ -33,7 +33,7 @@ extension Api {
             }
             
             struct CoverLookup: Decodable {
-                var result: Result
+                var result: String
                 var data: [Data]
                 
                 struct Data: Decodable {
@@ -44,10 +44,6 @@ extension Api {
                         var locale: String
                     }
                 }
-            }
-            
-            enum Result: Decodable {
-                case ok
             }
             
         }
@@ -84,9 +80,8 @@ extension Api {
                 switch self {
                 case .manga(let query):
                     components.path = "/manga"
-                    components.queryItems = []
                     if query != nil {
-                        components.queryItems!.append(URLQueryItem(name: "title", value: query))
+                        components.queryItems = [URLQueryItem(name: "title", value: query)]
                     }
                 case .cover(let id):
                     components.path = "/cover"
