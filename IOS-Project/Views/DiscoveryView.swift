@@ -7,26 +7,23 @@
 
 import SwiftUI
 
+enum ViewState {
+    case viewing
+    case selecting
+}
+
 struct DiscoveryView: View {
     @EnvironmentObject var mangadex: MangadexSdk
     @State var userId: String
     @State private var query: String = ""
+    @State private var selectionState: ViewState = .viewing
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 5) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), alignment: .center, spacing: 10.0) {
                     ForEach(mangadex.manga, id: \.id) { manga in
-                        VStack {
-                            AsyncImage(url: URL(string: manga.coverUrl),
-                                       content: { image in image.resizable() },
-                                       placeholder: { Color.gray })
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                            Text(manga.title)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(1)
-                        }
+                        MangaGridItem(manga: manga)
                     }
                 }
                 .padding(.horizontal)
@@ -35,7 +32,6 @@ struct DiscoveryView: View {
         .searchable(text: $query)
         .onAppear(perform: initData)
         .onSubmit(of: .search, initData)
-        
     }
     
     private func initData() {
@@ -43,7 +39,12 @@ struct DiscoveryView: View {
         if query == "" {
             realQuery = nil
         }
-        mangadex.getManga(query: realQuery)    }
+        mangadex.getManga(query: realQuery)
+    }
+    
+    private func loadMore() {
+        mangadex.loadNextPage()
+    }
 }
 
 struct DiscoveryView_Previews: PreviewProvider {

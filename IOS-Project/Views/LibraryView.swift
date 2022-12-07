@@ -13,16 +13,9 @@ struct LibraryView: View {
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 5) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), alignment: .center, spacing: 10.0) {
                 ForEach(mangaManager.manga, id: \.id) { manga in
-                    VStack {
-                        AsyncImage(url: URL(string: manga.coverUrl),
-                                   content: { image in image.resizable() },
-                                   placeholder: { Color.gray })
-                            .aspectRatio(contentMode: .fill)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                        Text(manga.title)
-                    }
+                    MangaGridItem(manga: manga)
                 }
             }
         }
