@@ -17,27 +17,33 @@ struct DiscoveryView: View {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], alignment: .center, spacing: 5) {
                     ForEach(mangadex.manga, id: \.id) { manga in
-                        ZStack {
+                        VStack {
                             AsyncImage(url: URL(string: manga.coverUrl),
                                        content: { image in image.resizable() },
                                        placeholder: { Color.gray })
-                                .aspectRatio(contentMode: .fit)
-                                .frame(height: 90)
+                                .aspectRatio(contentMode: .fill)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                             Text(manga.title)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(1)
                         }
                     }
                 }
+                .padding(.horizontal)
             }
         }
         .searchable(text: $query)
         .onAppear(perform: initData)
         .onSubmit(of: .search, initData)
+        
     }
     
     private func initData() {
-        mangadex.getManga(query: query)
-    }
+        var realQuery: String? = query
+        if query == "" {
+            realQuery = nil
+        }
+        mangadex.getManga(query: realQuery)    }
 }
 
 struct DiscoveryView_Previews: PreviewProvider {
