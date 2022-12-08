@@ -8,28 +8,36 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @EnvironmentObject var mangaManager: MangaManager
-    @State var userId: String
+    @State private var mangadex = MangadexSdk()
+    private let mangaManager: MangaManager
+    private let userId: String
+    
+    init(userId: String, mangaManager: MangaManager) {
+        self.userId = userId
+        self.mangaManager = mangaManager
+        initData()
+    }
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), alignment: .center, spacing: 10.0) {
-                ForEach(mangaManager.manga, id: \.id) { manga in
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
+                      alignment: .center, spacing: 10.0) {
+                ForEach(mangadex.manga, id: \.id) { manga in
                     MangaGridItem(manga: manga)
                 }
             }
         }
-        .onAppear { initData() }
     }
     
     private func initData() {
-        mangaManager.getManga(userId: userId)
+        mangaManager.getManga(userId: userId) { mangaIds in
+            mangadex.getMangaById(mangaIds: mangaIds)
+        }
     }
 }
 
 struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
-        LibraryView(userId: "w5sWxDHUmHddIQNnAQy5JcGjNRP2")
-            .environmentObject(MangaManager())
+        LibraryView(userId: "w5sWxDHUmHddIQNnAQy5JcGjNRP2", mangaManager: MangaManager())
     }
 }

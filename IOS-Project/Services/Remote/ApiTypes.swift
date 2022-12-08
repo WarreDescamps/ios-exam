@@ -13,7 +13,7 @@ extension Api {
         
         enum Response {
             
-            struct MangaSearch: Decodable {
+            struct MangadexManga: Decodable {
                 var result: String
                 var data:  [Data]
                 
@@ -22,17 +22,13 @@ extension Api {
                     var attributes: Attributes
                     
                     struct Attributes: Decodable {
-                        var title: MultiLanguage
-                        var description: MultiLanguage
-                        
-                        struct MultiLanguage: Decodable {
-                            var en: String
-                        }
+                        var title: [String: String]
+                        var description: [String: String]
                     }
                 }
             }
             
-            struct CoverLookup: Decodable {
+            struct MangadexCover: Decodable {
                 var result: String
                 var data: [Data]
                 
@@ -69,7 +65,8 @@ extension Api {
         }
         
         enum Endpoint {
-            case manga(query: String?, page: Int)
+            case mangaSearch(query: String?, page: Int)
+            case mangaById(mangaIds: [String])
             case cover(id: String)
             
             var url: URL {
@@ -78,7 +75,7 @@ extension Api {
                 components.scheme = "https"
                 
                 switch self {
-                case .manga(let query, let page):
+                case .mangaSearch(let query, let page):
                     let pageLimit = 20
                     components.path = "/manga"
                     components.queryItems = [
@@ -88,11 +85,18 @@ extension Api {
                     if query != nil {
                         components.queryItems?.append(URLQueryItem(name: "title", value: query))
                     }
+                case .mangaById(let mangaIds):
+                    components.path = "/manga"
+                    if !mangaIds.isEmpty {
+                        for id in mangaIds[0..<100] {
+                            components.queryItems?.append(URLQueryItem(name: "ids[]", value: id))
+                        }
+                    }
                 case .cover(let id):
                     components.path = "/cover"
                     components.queryItems = [
                         URLQueryItem(name: "manga[]", value: id),
-                        URLQueryItem(name: "order[createdAt]", value: "desc"),
+                        URLQueryItem(name: "order[volume]", value: "desc"),
                     ]
                 }
                 return components.url!

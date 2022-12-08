@@ -9,8 +9,7 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
-    @EnvironmentObject var mangaManager: MangaManager
-    @EnvironmentObject var mangadex: MangadexSdk
+    var mangaManager = MangaManager()
     
     @State private var userId = ""
     @State private var email = ""
@@ -18,17 +17,15 @@ struct ContentView: View {
     @State private var isLoggedIn = false
     
     var body: some View {
-        if isLoggedIn {
+        if !isLoggedIn {
             TabView {
                 DiscoveryView(userId: userId)
-                    .environmentObject(mangadex)
                     .tabItem() {
-                        Text("Discovery")
+                        Label("Discovery", systemImage: "globe")
                     }
-                LibraryView(userId: userId)
-                    .environmentObject(mangaManager)
+                LibraryView(userId: userId, mangaManager: mangaManager)
                     .tabItem() {
-                        Text("Library")
+                        Label("Library", systemImage: "books.vertical")
                     }
             }
         } else {
@@ -135,8 +132,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(MangaManager())
-            .environmentObject(MangadexSdk())
     }
 }
 
