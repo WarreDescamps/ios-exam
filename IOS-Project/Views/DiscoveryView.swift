@@ -13,7 +13,7 @@ enum ViewState {
 }
 
 struct DiscoveryView: View {
-    @ObservedObject var mangadex = MangadexSdk()
+    @StateObject var mangadex = MangadexSdk()
     @State var userId: String
     @State private var query: String = ""
     @State private var selectionState: ViewState = .viewing
@@ -27,7 +27,7 @@ struct DiscoveryView: View {
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
                           alignment: .center, spacing: 10.0) {
-                    ForEach(mangadex.manga, id: \.id) { manga in
+                    ForEach(self.mangadex.manga, id: \.id) { manga in
                         MangaGridItem(manga: manga)
                     }
                 }
@@ -43,12 +43,11 @@ struct DiscoveryView: View {
         if query == "" {
             realQuery = nil
         }
-        mangadex.getManga(query: realQuery)
-        print(mangadex.manga)
+        self.mangadex.getManga(query: realQuery)
     }
     
     private func loadMore() {
-        mangadex.loadNextPage()
+        self.mangadex.loadNextPage()
     }
 }
 

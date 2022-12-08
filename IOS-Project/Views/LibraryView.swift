@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @ObservedObject private var mangadex = MangadexSdk()
+    @StateObject private var mangadex = MangadexSdk()
     private let mangaManager: MangaManager
     private let userId: String
     
@@ -22,7 +22,7 @@ struct LibraryView: View {
         ScrollView {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
                       alignment: .center, spacing: 10.0) {
-                ForEach(mangadex.manga, id: \.id) { manga in
+                ForEach(self.mangadex.manga, id: \.id) { manga in
                     MangaGridItem(manga: manga)
                 }
             }
@@ -31,8 +31,9 @@ struct LibraryView: View {
     
     private func initData() {
         mangaManager.getManga(userId: userId) { mangaIds in
-            mangadex.getMangaById(mangaIds: mangaIds)
+            self.mangadex.getMangaById(mangaIds: mangaIds)
         }
+        
     }
 }
 

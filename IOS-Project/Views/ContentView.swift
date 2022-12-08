@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
-    var mangaManager = MangaManager()
+    @State var mangaManager = MangaManager()
     
     @State private var userId = ""
     @State private var email = ""
