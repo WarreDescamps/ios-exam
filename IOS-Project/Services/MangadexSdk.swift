@@ -99,7 +99,7 @@ class MangadexSdk: ObservableObject {
         var mangaIds = mangaIds
         while mangaIds.count > 0 {
             fetchManga(mangaIds: mangaIds)
-            if mangaIds.count > 100{
+            if mangaIds.count > 100 {
                 mangaIds = Array(mangaIds[100...])
             }
             else {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @State private var mangadex = MangadexSdk()
+    @ObservedObject private var mangadex = MangadexSdk()
     private let mangaManager: MangaManager
     private let userId: String
     

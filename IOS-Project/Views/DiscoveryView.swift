@@ -13,7 +13,7 @@ enum ViewState {
 }
 
 struct DiscoveryView: View {
-    @State var mangadex = MangadexSdk()
+    @ObservedObject var mangadex = MangadexSdk()
     @State var userId: String
     @State private var query: String = ""
     @State private var selectionState: ViewState = .viewing
