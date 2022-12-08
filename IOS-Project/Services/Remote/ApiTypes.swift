@@ -95,6 +95,7 @@ extension Api {
                         for id in mangaIds[0..<toRemove] {
                             components.queryItems?.append(URLQueryItem(name: "ids[]", value: id))
                         }
+                        components.queryItems?.append(URLQueryItem(name: "limit", value: "100"))
                     }
                     else {
                         components.queryItems?.append(URLQueryItem(name: "limit", value: "0"))
