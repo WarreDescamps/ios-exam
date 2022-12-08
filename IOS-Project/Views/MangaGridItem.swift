@@ -8,21 +8,20 @@
 import SwiftUI
 
 struct MangaGridItem: View {
-    var manga: Manga
+    @State var manga: Manga
     
     var body: some View {
-        ZStack {
-            AsyncImage(url: URL(string: manga.coverUrl),
-                       content: { image in image.resizable() },
-                       placeholder: {
-                            ZStack {
-                                Color.gray
-                                ProgressView()
-                                    .progressViewStyle(.circular)
-                            }
-                        })
-            .aspectRatio(contentMode: .fit)
-        }
+        AsyncImage(url: URL(string: manga.coverUrl),
+                   content: { image in image.resizable() },
+                   placeholder: {
+                        ZStack {
+                            Color.gray
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                        }
+                    })
+        //.aspectRatio(contentMode: .fit)
+        .aspectRatio(0.66, contentMode: .fit)
         .overlay(alignment: .bottom) {
             LinearGradient(gradient: Gradient(colors: [.black, .clear]), startPoint: .bottom, endPoint: .top)
                 .frame(height: 90.0)
@@ -35,7 +34,15 @@ struct MangaGridItem: View {
                 .lineLimit(2)
                 .padding([.leading, .bottom], 5.0)
         }
-        .clipShape(RoundedRectangle(cornerRadius: 10))    }
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        #if DEBUG
+        .overlay() {
+            GeometryReader { proxy in
+                Text("\(proxy.size.width)x\(proxy.size.height)")
+            }
+        }
+        #endif
+    }
 }
 
 struct MangaGridItem_Previews: PreviewProvider {
