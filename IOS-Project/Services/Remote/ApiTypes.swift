@@ -79,6 +79,7 @@ extension Api {
                     let pageLimit = 20
                     components.path = "/manga"
                     components.queryItems = [
+                        URLQueryItem(name: "contentRating[]", value: "safe"),
                         URLQueryItem(name: "limit", value: "\(pageLimit)"),
                         URLQueryItem(name: "offset", value: "\(page * pageLimit)")
                     ]
