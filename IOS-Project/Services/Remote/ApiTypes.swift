@@ -88,9 +88,16 @@ extension Api {
                 case .mangaById(let mangaIds):
                     components.path = "/manga"
                     if !mangaIds.isEmpty {
-                        for id in mangaIds[0..<100] {
+                        var toRemove = 100
+                        if mangaIds.count < toRemove {
+                            toRemove = mangaIds.count
+                        }
+                        for id in mangaIds[0..<toRemove] {
                             components.queryItems?.append(URLQueryItem(name: "ids[]", value: id))
                         }
+                    }
+                    else {
+                        components.queryItems?.append(URLQueryItem(name: "limit", value: "0"))
                     }
                 case .cover(let id):
                     components.path = "/cover"
