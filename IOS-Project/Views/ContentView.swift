@@ -23,7 +23,7 @@ struct ContentView: View {
                     .tabItem() {
                         Label("Discovery", systemImage: "globe")
                     }
-                LibraryView(userId: userId, mangaManager: mangaManager)
+                LibraryView(userId: userId)
                     .tabItem() {
                         Label("Library", systemImage: "books.vertical")
                     }

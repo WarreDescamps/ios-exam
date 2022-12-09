@@ -26,7 +26,7 @@ struct DiscoveryView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        NavigationView {
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
                           alignment: .center, spacing: 10.0) {

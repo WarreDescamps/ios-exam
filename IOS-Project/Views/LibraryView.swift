@@ -9,12 +9,10 @@ import SwiftUI
 
 struct LibraryView: View {
     @StateObject var mangadex = SingletonManager.instance(key: "library")
-    private let mangaManager: MangaManager
     private let userId: String
     
-    init(userId: String, mangaManager: MangaManager) {
+    init(userId: String) {
         self.userId = userId
-        self.mangaManager = mangaManager
     }
     
     var body: some View {
@@ -34,7 +32,7 @@ struct LibraryView: View {
     }
     
     func initData() {
-        mangaManager.getManga(userId: userId) { mangaIds in
+        MangaManager.shared.getManga(userId: userId) { mangaIds in
             SingletonManager.instance(key: "library").getMangaById(mangaIds: mangaIds)
         }
     }
@@ -42,6 +40,6 @@ struct LibraryView: View {
 
 struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
-        LibraryView(userId: DebugConstants.userId, mangaManager: MangaManager())
+        LibraryView(userId: DebugConstants.userId)
     }
 }
