@@ -28,6 +28,7 @@ struct ContentView: View {
                         Label("Library", systemImage: "books.vertical")
                     }
             }
+            .ignoresSafeArea()
         } else {
             authContent
         }
@@ -37,12 +38,12 @@ struct ContentView: View {
         ZStack {
             Color.black
             RoundedRectangle(cornerRadius: 30, style: .circular)
-                .foregroundStyle(.linearGradient(colors: [.purple, .cyan], startPoint: .topTrailing, endPoint: .bottomTrailing))
+                .foregroundStyle(.linearGradient(colors: [.purple, .orange, .cyan], startPoint: .topTrailing, endPoint: .bottomTrailing))
                 .frame(width: 1000, height: 400)
                 .rotationEffect(.degrees(135))
                 .offset(y: -350)
             
-            VStackLayout(spacing: 20) {
+            VStackLayout(spacing: 10) {
                 Text("Welcome")
                     .foregroundColor(.white)
                     .font(.system(size: 40, weight: .bold, design: .rounded))
@@ -112,18 +113,17 @@ struct ContentView: View {
     }
     
     func login() {
-        Auth.auth().signIn(withEmail: email, link: password) { result, error in
-            if error != nil {
-                print(error!.localizedDescription)
-                isLoggedIn.toggle()
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print(error.localizedDescription)
             }
         }
     }
     
     func register() {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            if error != nil {
-                print(error!.localizedDescription)
+            if let error = error {
+                print(error.localizedDescription)
             }
         }
     }

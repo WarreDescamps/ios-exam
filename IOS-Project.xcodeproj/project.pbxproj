@@ -11,6 +11,7 @@
 		3E6201CF29436940007F60F7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E6201CE29436940007F60F7 /* GoogleService-Info.plist */; };
 		3E6201D2294372BA007F60F7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 3E6201D1294372BA007F60F7 /* FirebaseAuth */; };
 		3E6201D4294372BA007F60F7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 3E6201D3294372BA007F60F7 /* FirebaseFirestore */; };
+		3E6201D6294390E9007F60F7 /* SingletonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6201D5294390E9007F60F7 /* SingletonManager.swift */; };
 		606DEB012926C04D0062C9BC /* IOS_ProjectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DEB002926C04D0062C9BC /* IOS_ProjectApp.swift */; };
 		606DEB032926C04D0062C9BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606DEB022926C04D0062C9BC /* ContentView.swift */; };
 		606DEB052926C04F0062C9BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 606DEB042926C04F0062C9BC /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 /* Begin PBXFileReference section */
 		3E285F002930FF63003D0DA4 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3E6201CE29436940007F60F7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3E6201D5294390E9007F60F7 /* SingletonManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingletonManager.swift; sourceTree = "<group>"; };
 		606DEAFD2926C04D0062C9BC /* IOS-Project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IOS-Project.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		606DEB002926C04D0062C9BC /* IOS_ProjectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOS_ProjectApp.swift; sourceTree = "<group>"; };
 		606DEB022926C04D0062C9BC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				698D14DE293E665A00BCC39D /* Remote */,
 				698D14DC293E5C7C00BCC39D /* MangadexSdk.swift */,
 				69765D98293A98C600F662FC /* MangaManager.swift */,
+				3E6201D5294390E9007F60F7 /* SingletonManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				3E285F012930FF63003D0DA4 /* LibraryView.swift in Sources */,
 				69765D96293A977200F662FC /* Manga.swift in Sources */,
 				606DEB012926C04D0062C9BC /* IOS_ProjectApp.swift in Sources */,
+				3E6201D6294390E9007F60F7 /* SingletonManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
