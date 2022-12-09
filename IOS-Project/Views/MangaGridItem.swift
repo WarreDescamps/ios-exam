@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MangaGridItem: View {
-    @State var manga: Manga
+    var manga: Manga
     
     var body: some View {
         AsyncImage(url: URL(string: manga.coverUrl),
@@ -42,6 +42,50 @@ struct MangaGridItem: View {
             }
         }
         #endif
+    }
+}
+
+struct SelectableMangaGridItem: View {
+    var manga: Manga
+    
+    @Binding var selectionState: ViewState
+    @Binding var selectedManga: [Manga]
+    
+    var body: some View {
+        MangaGridItem(manga: manga)
+            .if(selectionState == .viewing) { view in
+                view
+                    .onTapGesture {}
+                    .onLongPressGesture() {
+                        DispatchQueue.main.async {
+                            selectedManga.removeAll()
+                            selectedManga.append(manga)
+                            selectionState = .selecting
+                        }
+                    }
+            }
+            .if(selectionState == .selecting) { view in
+                view
+                    .onTapGesture {
+                        DispatchQueue.main.async {
+                            if selectedManga.contains(where: { $0.id == manga.id }) {
+                                selectedManga.removeAll(where: { $0.id == manga.id })
+                            }
+                            else {
+                                selectedManga.append(manga)
+                            }
+                        }
+                    }
+            }
+            .if(selectedManga.contains(where: { $0.id == manga.id })) { view in
+                view
+                    .scaleEffect(0.92)
+                    .shadow(color: .blue, radius: 8)
+//                                    .background(
+//                                        Color.blue
+//                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+//                                    )
+            }
     }
 }
 
