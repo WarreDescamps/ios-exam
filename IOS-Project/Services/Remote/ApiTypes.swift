@@ -88,6 +88,7 @@ extension Api {
                     }
                 case .mangaById(let mangaIds):
                     components.path = "/manga"
+                    components.queryItems = []
                     if !mangaIds.isEmpty {
                         var toRemove = 100
                         if mangaIds.count < toRemove {
@@ -106,6 +107,7 @@ extension Api {
                     components.queryItems = [
                         URLQueryItem(name: "manga[]", value: id),
                         URLQueryItem(name: "order[volume]", value: "desc"),
+                        URLQueryItem(name: "limit", value: "1")
                     ]
                 }
                 return components.url!

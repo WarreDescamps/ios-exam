@@ -13,7 +13,7 @@ enum ViewState {
 }
 
 struct DiscoveryView: View {
-    @StateObject var mangadex = MangadexSdk()
+    @StateObject var mangadex = SingletonManager.instance(key: "discovery")
     @State var userId: String
     @State private var query: String = ""
     
@@ -22,6 +22,7 @@ struct DiscoveryView: View {
     
     init(userId: String) {
         self.userId = userId
+        initData()
     }
     
     var body: some View {
@@ -37,8 +38,8 @@ struct DiscoveryView: View {
                 .if(selectionState == .selecting) { view in
                     view
                         .toolbar {
-                            ToolbarItem() {
-                                Button(action: addManga) {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button(action: cancelSelection) {
                                     Label("Cancel", systemImage: "x.circle.fill")
                                 }
                                 .tint(.red)
@@ -50,7 +51,7 @@ struct DiscoveryView: View {
                         }
                 }
             }
-            //.refreshable(action: initData)
+            .refreshable(action: initData)
         }
         .searchable(text: $query)
         .onSubmit(of: .search, initData)
@@ -61,15 +62,20 @@ struct DiscoveryView: View {
         if query == "" {
             realQuery = nil
         }
-        self.mangadex.getManga(query: realQuery)
+        SingletonManager.instance(key: "discovery").getManga(query: realQuery)
     }
     
     private func loadMore() {
-        self.mangadex.loadNextPage()
+        SingletonManager.instance(key: "discovery").loadNextPage()
     }
     
     private func addManga() {
         
+    }
+    
+    private func cancelSelection() {
+        selectionState = .viewing
+        selectedManga = []
     }
 }
 

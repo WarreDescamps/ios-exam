@@ -35,13 +35,6 @@ struct MangaGridItem: View {
                 .padding([.leading, .bottom], 5.0)
         }
         .clipShape(RoundedRectangle(cornerRadius: 10))
-        #if DEBUG
-        .overlay() {
-            GeometryReader { proxy in
-                Text("\(proxy.size.width)x\(proxy.size.height)")
-            }
-        }
-        #endif
     }
 }
 
@@ -80,7 +73,7 @@ struct SelectableMangaGridItem: View {
             .if(selectedManga.contains(where: { $0.id == manga.id })) { view in
                 view
                     .scaleEffect(0.92)
-                    .shadow(color: .blue, radius: 8)
+                    .shadow(color: .orange, radius: 10)
 //                                    .background(
 //                                        Color.blue
 //                                            .clipShape(RoundedRectangle(cornerRadius: 10))

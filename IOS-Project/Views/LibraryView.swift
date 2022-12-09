@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LibraryView: View {
-    @StateObject private var mangadex = MangadexSdk()
+    @StateObject var mangadex = SingletonManager.instance(key: "library")
     private let mangaManager: MangaManager
     private let userId: String
     
@@ -26,14 +26,14 @@ struct LibraryView: View {
                     MangaGridItem(manga: manga)
                 }
             }
+            .padding(.horizontal)
         }
     }
     
-    private func initData() {
+    func initData() {
         mangaManager.getManga(userId: userId) { mangaIds in
-            self.mangadex.getMangaById(mangaIds: mangaIds)
+            SingletonManager.instance(key: "library").getMangaById(mangaIds: mangaIds)
         }
-        
     }
 }
 

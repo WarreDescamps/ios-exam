@@ -42,10 +42,6 @@ class MangaManager {
                     print(error.localizedDescription)
                     return
                 }
-                else {
-                    // refresh observable arr
-                    self.getManga(userId: userId, completion: completion)
-                }
             }
     }
     
