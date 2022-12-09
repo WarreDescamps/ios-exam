@@ -75,20 +75,33 @@ struct SelectableMangaGridItem: View {
             }
             .if(selectedManga.contains(where: { $0.id == manga.id })) { view in
                 view
-                    .scaleEffect(0.92)
-                    .shadow(color: .blue, radius: 10)
+                    .overlay(alignment: .center) {
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundColor(.white)
+                            .opacity(0.2)
+                            .overlay(alignment: .center) {
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(style: StrokeStyle(lineWidth: 5))
+                                    .foregroundColor(.blue)
+                            }
+                    }
             }
     }
 }
 
 struct MangaGridItem_Previews: PreviewProvider {
     static var previews: some View {
-        MangaGridItem_PreviewContainer()
+        VStack {
+            MangaGridItem(manga: DebugConstants.worldTrigger)
+            SelectableMangaGridItem_PreviewContainer()
+        }
     }
 }
 
-struct MangaGridItem_PreviewContainer: View {
+struct SelectableMangaGridItem_PreviewContainer: View {
+    @State private var selectionState: ViewState = .viewing
+    @State private var selectedManga = [Manga]()
     var body: some View {
-        MangaGridItem(manga: DebugConstants.worldTrigger)
+        SelectableMangaGridItem(manga: DebugConstants.worldTrigger, selectionState: $selectionState, selectedManga: $selectedManga)
     }
 }
