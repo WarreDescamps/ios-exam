@@ -15,19 +15,22 @@ struct LibraryView: View {
     init(userId: String, mangaManager: MangaManager) {
         self.userId = userId
         self.mangaManager = mangaManager
-        initData()
     }
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
-                      alignment: .center, spacing: 10.0) {
-                ForEach(self.mangadex.manga, id: \.id) { manga in
-                    MangaGridItem(manga: manga)
+        NavigationView {
+            ScrollView {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
+                          alignment: .center, spacing: 10.0) {
+                    ForEach(self.mangadex.manga, id: \.id) { manga in
+                        MangaGridItem(manga: manga)
+                    }
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
+            .navigationTitle("Library")
         }
+        .onAppear(perform: initData)
     }
     
     func initData() {
@@ -39,6 +42,6 @@ struct LibraryView: View {
 
 struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
-        LibraryView(userId: "w5sWxDHUmHddIQNnAQy5JcGjNRP2", mangaManager: MangaManager())
+        LibraryView(userId: DebugConstants.userId, mangaManager: MangaManager())
     }
 }

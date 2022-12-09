@@ -10,6 +10,10 @@ import SwiftUI
 struct MangaGridItem: View {
     var manga: Manga
     
+    init(manga: Manga) {
+        self.manga = manga
+    }
+    
     var body: some View {
         AsyncImage(url: URL(string: manga.coverUrl),
                    content: { image in image.resizable() },
@@ -40,7 +44,6 @@ struct MangaGridItem: View {
 
 struct SelectableMangaGridItem: View {
     var manga: Manga
-    
     @Binding var selectionState: ViewState
     @Binding var selectedManga: [Manga]
     
@@ -48,7 +51,7 @@ struct SelectableMangaGridItem: View {
         MangaGridItem(manga: manga)
             .if(selectionState == .viewing) { view in
                 view
-                    .onTapGesture {}
+                    .onTapGesture { }
                     .onLongPressGesture() {
                         DispatchQueue.main.async {
                             selectedManga.removeAll()
@@ -73,17 +76,19 @@ struct SelectableMangaGridItem: View {
             .if(selectedManga.contains(where: { $0.id == manga.id })) { view in
                 view
                     .scaleEffect(0.92)
-                    .shadow(color: .orange, radius: 10)
-//                                    .background(
-//                                        Color.blue
-//                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-//                                    )
+                    .shadow(color: .blue, radius: 10)
             }
     }
 }
 
 struct MangaGridItem_Previews: PreviewProvider {
     static var previews: some View {
-        MangaGridItem(manga: Manga(id: "1", title: "World Trigger", description: "A portal opens blah di blah di blah", coverUrl: "https://mangadex.org/covers/7ae7067a-7e68-4bd2-a064-5e3e3c059078/6742f549-20ec-48fa-ba7a-e9c54cac5ebb.jpg.512.jpg"))
+        MangaGridItem_PreviewContainer()
+    }
+}
+
+struct MangaGridItem_PreviewContainer: View {
+    var body: some View {
+        MangaGridItem(manga: DebugConstants.worldTrigger)
     }
 }

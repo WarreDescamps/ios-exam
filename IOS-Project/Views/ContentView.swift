@@ -43,7 +43,7 @@ struct ContentView: View {
                 .rotationEffect(.degrees(135))
                 .offset(y: -350)
             
-            VStackLayout(spacing: 10) {
+            VStackLayout(spacing: 20) {
                 Text("Welcome")
                     .foregroundColor(.white)
                     .font(.system(size: 40, weight: .bold, design: .rounded))
@@ -61,6 +61,7 @@ struct ContentView: View {
                 Rectangle()
                     .frame(width: 350, height: 1)
                     .foregroundColor(.white)
+                    .offset(y: /*@START_MENU_TOKEN@*/-10.0/*@END_MENU_TOKEN@*/)
                 
                 SecureField("Password", text: $password)
                     .foregroundColor(.white)
@@ -74,6 +75,7 @@ struct ContentView: View {
                 Rectangle()
                     .frame(width: 350, height: 1)
                     .foregroundColor(.white)
+                    .offset(y: /*@START_MENU_TOKEN@*/-10.0/*@END_MENU_TOKEN@*/)
                 
                 Button {
                     register()
@@ -136,13 +138,12 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 extension View {
-    func placeholder<Content: View>(
-        when shouldShow: Bool,
-        alignment: Alignment = .leading,
-        @ViewBuilder placeholder: () -> Content) -> some View {
-            ZStack(alignment: alignment) {
-                placeholder().opacity(shouldShow ? 1 : 0)
-                self
-            }
+    func placeholder<Content: View>(when shouldShow: Bool,
+                                    alignment: Alignment = .leading,
+                                    @ViewBuilder placeholder: () -> Content) -> some View {
+        ZStack(alignment: alignment) {
+            placeholder().opacity(shouldShow ? 1 : 0)
+            self
         }
+    }
 }

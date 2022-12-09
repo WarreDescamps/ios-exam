@@ -9,6 +9,8 @@ import Foundation
 import Firebase
 
 class MangaManager {
+    static let shared = MangaManager()
+    
     func getManga(userId: String, completion: @escaping (([String]) -> Void)) {
         let db = Firestore.firestore()
         

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Manga: Identifiable {
+struct Manga: Identifiable, Hashable {
     var id: String
     var title: String
     var description: String

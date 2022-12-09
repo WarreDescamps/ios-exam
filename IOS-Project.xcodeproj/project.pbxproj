@@ -27,6 +27,8 @@
 		698D14EC293E885300BCC39D /* ApiSdk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698D14E9293E885300BCC39D /* ApiSdk.swift */; };
 		698D14ED293E885300BCC39D /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698D14EA293E885300BCC39D /* Api.swift */; };
 		698D14EE293E885300BCC39D /* ApiTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698D14EB293E885300BCC39D /* ApiTypes.swift */; };
+		69E4FCF52943CAD400E1486D /* MangaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E4FCF42943CAD400E1486D /* MangaDetailView.swift */; };
+		69E4FCF72943CB0700E1486D /* DebugConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E4FCF62943CB0700E1486D /* DebugConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,8 @@
 		698D14E9293E885300BCC39D /* ApiSdk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSdk.swift; sourceTree = "<group>"; };
 		698D14EA293E885300BCC39D /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		698D14EB293E885300BCC39D /* ApiTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiTypes.swift; sourceTree = "<group>"; };
+		69E4FCF42943CAD400E1486D /* MangaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailView.swift; sourceTree = "<group>"; };
+		69E4FCF62943CB0700E1486D /* DebugConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,7 @@
 				3E285F002930FF63003D0DA4 /* LibraryView.swift */,
 				698D14D5293E5A3700BCC39D /* DiscoveryView.swift */,
 				698AFEEC29414AB8009D11C7 /* MangaGridItem.swift */,
+				69E4FCF42943CAD400E1486D /* MangaDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -171,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				69765D95293A977200F662FC /* Manga.swift */,
+				69E4FCF62943CB0700E1486D /* DebugConstants.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -343,8 +349,10 @@
 				698D14EC293E885300BCC39D /* ApiSdk.swift in Sources */,
 				698D14DD293E5C7C00BCC39D /* MangadexSdk.swift in Sources */,
 				3E285F012930FF63003D0DA4 /* LibraryView.swift in Sources */,
+				69E4FCF72943CB0700E1486D /* DebugConstants.swift in Sources */,
 				69765D96293A977200F662FC /* Manga.swift in Sources */,
 				606DEB012926C04D0062C9BC /* IOS_ProjectApp.swift in Sources */,
+				69E4FCF52943CAD400E1486D /* MangaDetailView.swift in Sources */,
 				3E6201D6294390E9007F60F7 /* SingletonManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
