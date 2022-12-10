@@ -87,16 +87,8 @@ struct SelectableMangaGridItem: View {
             }
             .if(selectionState == .selecting) { view in
                 view
-                    .onTapGesture {
-                        DispatchQueue.main.async {
-                            if selectedManga.contains(where: { $0.id == manga.id }) {
-                                selectedManga.removeAll(where: { $0.id == manga.id })
-                            }
-                            else {
-                                selectedManga.append(manga)
-                            }
-                        }
-                    }
+                    .onTapGesture(perform: changeSelection)
+                    .onLongPressGesture(perform: changeSelection)
             }
             .if(selectionState == .selecting && selectedManga.contains(where: { $0.id == manga.id })) { view in
                 view
@@ -111,6 +103,17 @@ struct SelectableMangaGridItem: View {
                             }
                     }
             }
+    }
+    
+    private func changeSelection() {
+        DispatchQueue.main.async {
+            if selectedManga.contains(where: { $0.id == manga.id }) {
+                selectedManga.removeAll(where: { $0.id == manga.id })
+            }
+            else {
+                selectedManga.append(manga)
+            }
+        }
     }
 }
 
