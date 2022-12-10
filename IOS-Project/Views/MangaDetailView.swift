@@ -9,19 +9,41 @@ import SwiftUI
 
 struct MangaDetailView: View {
     @State var manga: Manga
+    var parentTitle = ""
     var onDismiss: () -> Void
+    
     
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(leading: Button(action : {
-                onDismiss()
-                self.mode.wrappedValue.dismiss()
-            }){
-                Label("Back", systemImage: "arrow.left")
-            })
+        VStack {
+            HStack {
+                AsyncImage(url: URL(string: manga.coverUrl),
+                           content: { image in image.resizable() },
+                           placeholder: {
+                    ZStack {
+                        Color.gray
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                    }
+                })
+                .aspectRatio(0.66, contentMode: .fit)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                Text(manga.title)
+                    .frame(alignment: .leading)
+            }
+            Text(manga.description)
+            Spacer()
+        }
+        .padding(.horizontal)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: Button(action : {
+            onDismiss()
+            self.mode.wrappedValue.dismiss()
+        }){
+            Label(parentTitle, systemImage: "chevron.backward")
+                .labelStyle(.titleAndIcon)
+        })
     }
 }
 

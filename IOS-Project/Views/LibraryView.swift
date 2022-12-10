@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LibraryView: View {
     @StateObject var mangadex = SingletonManager.instance(key: "library")
+    @State private var isMangaDetailShown = false
     private let userId: String
     
     init(userId: String) {
@@ -21,7 +22,7 @@ struct LibraryView: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
                           alignment: .center, spacing: 10.0) {
                     ForEach(self.mangadex.manga, id: \.id) { manga in
-                        MangaGridItem(manga: manga)
+                        MangaGridItem(manga: manga, showDetail: $isMangaDetailShown)
                     }
                 }
                 .padding(.horizontal)

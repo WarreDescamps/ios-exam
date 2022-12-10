@@ -32,13 +32,14 @@ struct DiscoveryView: View {
                           alignment: .center, spacing: 10.0) {
                     ForEach(self.mangadex.manga, id: \.id) { manga in
                         SelectableMangaGridItem(manga: manga,
+                                                parentTitle: "Discovery",
                                                 selectionState: $selectionState,
                                                 selectedManga: $selectedManga)
                     }
+                    Color.clear
+                        .onAppear(perform: loadMore)
                 }
                 .padding(.horizontal)
-                Color.clear
-                    .onAppear(perform: loadMore)
             }
             .navigationTitle("Discovery")
             .if(selectionState == .selecting) { view in

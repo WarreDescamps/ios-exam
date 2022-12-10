@@ -11,18 +11,13 @@ struct MangaGridItem: View {
     var manga: Manga
     @Binding var showDetail: Bool
     let isSelectable: Bool
+    let parentTitle: String
     
-    init(manga: Manga) {
+    init(manga: Manga, showDetail: Binding<Bool>, parentTitle: String = "", isSelectable: Bool = false) {
         self.manga = manga
-        self.isSelectable = false
-        var showDetail = false
-        self._showDetail = Binding(get: { showDetail }, set: { showDetail = $0 })
-    }
-    
-    init(manga: Manga, showDetail: Binding<Bool>) {
-        self.manga = manga
-        self.isSelectable = true
         self._showDetail = showDetail
+        self.isSelectable = isSelectable
+        self.parentTitle = parentTitle
     }
     
     var body: some View {
@@ -59,7 +54,7 @@ struct MangaGridItem: View {
             }
             
             NavigationLink("Hidden", isActive: $showDetail) {
-                MangaDetailView(manga: manga, onDismiss: { showDetail = false })
+                MangaDetailView(manga: manga, parentTitle: parentTitle, onDismiss: { showDetail = false })
             }
             .hidden()
         }
@@ -68,12 +63,13 @@ struct MangaGridItem: View {
 
 struct SelectableMangaGridItem: View {
     var manga: Manga
+    var parentTitle = ""
     @Binding var selectionState: ViewState
     @Binding var selectedManga: [Manga]
     @State var showDetail = false
     
     var body: some View {
-        MangaGridItem(manga: manga, showDetail: $showDetail)
+        MangaGridItem(manga: manga, showDetail: $showDetail, parentTitle: parentTitle, isSelectable: true)
             .if(selectionState == .viewing) { view in
                 view
                     .onTapGesture { showDetail = true }
@@ -120,9 +116,16 @@ struct SelectableMangaGridItem: View {
 struct MangaGridItem_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            MangaGridItem(manga: DebugConstants.worldTrigger)
+            MangaGridItem_PreviewContainer()
             SelectableMangaGridItem_PreviewContainer()
         }
+    }
+}
+
+struct MangaGridItem_PreviewContainer: View {
+    @State private var showDetail = false
+    var body: some View {
+        MangaGridItem(manga: DebugConstants.worldTrigger, showDetail: $showDetail)
     }
 }
 
