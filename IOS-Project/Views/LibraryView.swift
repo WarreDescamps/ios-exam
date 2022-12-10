@@ -10,11 +10,6 @@ import SwiftUI
 struct LibraryView: View {
     @StateObject var mangadex = SingletonManager.instance(key: "library")
     @State private var isMangaDetailShown = false
-    private let userId: String
-    
-    init(userId: String) {
-        self.userId = userId
-    }
     
     var body: some View {
         NavigationView {
@@ -33,7 +28,7 @@ struct LibraryView: View {
     }
     
     func initData() {
-        MangaManager.shared.getManga(userId: userId) { mangaIds in
+        MangaManager.shared.getManga() { mangaIds in
             SingletonManager.instance(key: "library").getMangaById(mangaIds: mangaIds)
         }
     }
@@ -41,6 +36,6 @@ struct LibraryView: View {
 
 struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
-        LibraryView(userId: DebugConstants.userId)
+        LibraryView()
     }
 }

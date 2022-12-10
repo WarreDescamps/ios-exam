@@ -9,9 +9,6 @@ import SwiftUI
 import Firebase
 
 struct ContentView: View {
-    @State var mangaManager = MangaManager()
-    
-    @State private var userId = ""
     @State private var email = ""
     @State private var password = ""
     @State private var isLoggedIn = false
@@ -30,11 +27,11 @@ struct ContentView: View {
     var body: some View {
         if isLoggedIn {
             TabView {
-                DiscoveryView(userId: userId)
+                DiscoveryView()
                     .tabItem() {
                         Label("Discovery", systemImage: "globe")
                     }
-                LibraryView(userId: userId)
+                LibraryView()
                     .tabItem() {
                         Label("Library", systemImage: "books.vertical")
                     }
@@ -116,7 +113,7 @@ struct ContentView: View {
             .onAppear {
                 Auth.auth().addStateDidChangeListener { auth, user in
                     if user != nil {
-                        userId = user?.uid as? String ?? ""
+                        MangaManager.shared.login(userId: user?.uid as? String ?? "")
                         isLoggedIn.toggle()
                     }
                 }

@@ -14,16 +14,10 @@ enum ViewState {
 
 struct DiscoveryView: View {
     @StateObject var mangadex = SingletonManager.instance(key: "discovery")
-    @State var userId: String
     @State private var query: String = ""
     
     @State private var selectionState: ViewState = .viewing
     @State private var selectedManga = [Manga]()
-    
-    init(userId: String) {
-        self.userId = userId
-        initData()
-    }
     
     var body: some View {
         NavigationView {
@@ -84,7 +78,7 @@ struct DiscoveryView: View {
     
     private func addManga() {
         for manga in selectedManga {
-            MangaManager.shared.addManga(userId: userId, manga: manga)
+            MangaManager.shared.addManga(manga: manga)
         }
     }
     
@@ -106,7 +100,7 @@ extension View {
 
 struct DiscoveryView_Previews: PreviewProvider {
     static var previews: some View {
-        DiscoveryView(userId: DebugConstants.userId)
+        DiscoveryView()
             .environmentObject(MangadexSdk())
     }
 }

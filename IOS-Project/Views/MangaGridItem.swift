@@ -54,7 +54,7 @@ struct MangaGridItem: View {
             }
             
             NavigationLink("Hidden", isActive: $showDetail) {
-                MangaDetailView(manga: manga, parentTitle: parentTitle, onDismiss: { showDetail = false })
+                MangaDetailView(manga: manga, onDismiss: { showDetail = false }, parentTitle: parentTitle)
             }
             .hidden()
         }
