@@ -83,7 +83,7 @@ struct DiscoveryView: View {
     
     private func addManga() {
         for manga in selectedManga {
-            MangaManager.shared.addManga(userId: userId, manga: manga) { _ in }
+            MangaManager.shared.addManga(userId: userId, manga: manga)
         }
     }
     

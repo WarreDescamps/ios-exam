@@ -35,7 +35,7 @@ class MangaManager {
         
     }
     
-    func addManga(userId: String, manga: Manga, completion: @escaping (([String]) -> Void)){
+    func addManga(userId: String, manga: Manga){
         let db = Firestore.firestore()
         
         db.collection("UserManga")
@@ -47,7 +47,7 @@ class MangaManager {
             }
     }
     
-    func deleteManga(userId: String, mangaId: String, completion: @escaping (([String]) -> Void)) {
+    func deleteManga(userId: String, mangaId: String) {
         let db = Firestore.firestore()
         
         // get all manga in
@@ -68,9 +68,6 @@ class MangaManager {
                                 if let error = error {
                                     print(error.localizedDescription)
                                     return
-                                }
-                                else {
-                                    self.getManga(userId: userId, completion: completion)
                                 }
                             }
                         }
