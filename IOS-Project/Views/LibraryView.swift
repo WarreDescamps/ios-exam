@@ -16,8 +16,8 @@ struct LibraryView: View {
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
                           alignment: .center, spacing: 10.0) {
-                    ForEach(self.mangadex.manga, id: \.id) { manga in
-                        MangaGridItem(manga: manga, showDetail: $isMangaDetailShown)
+                    ForEach(self.mangadex.manga) { manga in
+                        MangaGridItem(manga: manga, showDetail: $isMangaDetailShown, parentTitle: "Library")
                     }
                 }
                 .padding(.horizontal)
@@ -36,6 +36,16 @@ struct LibraryView: View {
 
 struct LibraryView_Previews: PreviewProvider {
     static var previews: some View {
+        LibraryView_PreviewContainer()
+    }
+}
+
+struct LibraryView_PreviewContainer: View {
+    init() {
+        MangaManager.shared.login(userId: DebugConstants.userId)
+    }
+    
+    var body: some View {
         LibraryView()
     }
 }
