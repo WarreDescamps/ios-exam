@@ -19,12 +19,16 @@ struct DiscoveryView: View {
     @State private var selectionState: ViewState = .viewing
     @State private var selectedManga = [Manga]()
     
+    init() {
+        initData()
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2),
                           alignment: .center, spacing: 10.0) {
-                    ForEach(self.mangadex.manga, id: \.id) { manga in
+                    ForEach(self.mangadex.manga) { manga in
                         SelectableMangaGridItem(manga: manga,
                                                 parentTitle: "Discovery",
                                                 selectionState: $selectionState,
