@@ -51,7 +51,7 @@ class MangadexSdk: ObservableObject {
                     ?? ""
                 var genres = [String]()
                 for tag in result.attributes.tags {
-                    if tag.group == Api.Types.Response.Group.genre.asString {
+                    if tag.attributes.group == Api.Types.Response.Group.genre.asString {
                         if let name = tag.attributes.name["en"] {
                             genres.append(name)
                         }
@@ -91,9 +91,9 @@ class MangadexSdk: ObservableObject {
     }
     
     func getManga(query: String?) {
-        page = 0
-        lastQuery = query
-        manga.removeAll()
+        self.page = 0
+        self.lastQuery = query
+        self.manga.removeAll()
         fetchManga(query: query)
     }
     
@@ -112,7 +112,7 @@ class MangadexSdk: ObservableObject {
     }
     
     func loadNextPage() {
-        page += 1
+        self.page = self.page + 1
         fetchManga(query: lastQuery)
     }
 }

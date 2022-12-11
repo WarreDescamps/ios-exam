@@ -27,11 +27,11 @@ extension Api {
                         var tags: [Tag]
                         
                         struct Tag: Decodable {
-                            var group: String
                             var attributes: NameAttribute
                             
                             struct NameAttribute: Decodable {
                                 var name: [String: String]
+                                var group: String
                             }
                         }
                     }
