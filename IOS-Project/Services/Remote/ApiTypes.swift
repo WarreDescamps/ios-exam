@@ -14,12 +14,13 @@ extension Api {
         enum Response {
             
             struct MangadexManga: Decodable {
-                var result: String
                 var data:  [Data]
+                var total: Int
                 
                 struct Data: Decodable{
                     var id: String
                     var attributes: Attributes
+                    var relationships : [Relation]
                     
                     struct Attributes: Decodable {
                         var title: [String: String]
@@ -35,11 +36,27 @@ extension Api {
                             }
                         }
                     }
+                    
+                    struct Relation: Decodable {
+                        var id: String
+                        var type: String
+                    }
+                }
+            }
+            
+            struct MangadexAuthor: Decodable {
+                var data: [Data]
+                
+                struct Data: Decodable {
+                    var attributes: Attributes
+                    
+                    struct Attributes: Decodable {
+                        var name: String
+                    }
                 }
             }
             
             struct MangadexCover: Decodable {
-                var result: String
                 var data: [Data]
                 
                 struct Data: Decodable {
@@ -95,6 +112,7 @@ extension Api {
             case mangaSearch(query: String?, page: Int)
             case mangaById(mangaIds: [String])
             case cover(id: String)
+            case authors(ids: [String])
             
             var url: URL {
                 var components = URLComponents()
@@ -136,6 +154,17 @@ extension Api {
                         URLQueryItem(name: "order[volume]", value: "desc"),
                         URLQueryItem(name: "limit", value: "1")
                     ]
+                case .authors(let ids):
+                    components.path = "/author"
+                    if !ids.isEmpty {
+                        components.queryItems = []
+                        for id in ids {
+                            components.queryItems?.append(URLQueryItem(name: "ids[]", value: id))
+                        }
+                    }
+                    else {
+                        components.queryItems = [URLQueryItem(name: "limit", value: "0")]
+                    }
                 }
                 return components.url!
             }
