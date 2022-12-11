@@ -49,9 +49,18 @@ class MangadexSdk: ObservableObject {
                     ?? result.attributes.description["ru"]
                     ?? result.attributes.description["pt"]
                     ?? ""
+                var genres = [String]()
+                for tag in result.attributes.tags {
+                    if tag.group == Api.Types.Response.Group.genre.asString {
+                        if let name = tag.attributes.name["en"] {
+                            genres.append(name)
+                        }
+                    }
+                }
                 self.appendWithCoverUrl(manga: Manga(id: result.id,
                                                      title: title,
                                                      description: description,
+                                                     genres: genres,
                                                      coverUrl: "https://mangadex.org/covers/\(result.id)/"))
             }
         }

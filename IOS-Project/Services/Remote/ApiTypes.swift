@@ -24,6 +24,16 @@ extension Api {
                     struct Attributes: Decodable {
                         var title: [String: String]
                         var description: [String: String]
+                        var tags: [Tag]
+                        
+                        struct Tag: Decodable {
+                            var group: String
+                            var attributes: NameAttribute
+                            
+                            struct NameAttribute: Decodable {
+                                var name: [String: String]
+                            }
+                        }
                     }
                 }
             }
@@ -39,6 +49,23 @@ extension Api {
                         var fileName: String
                         var locale: String
                     }
+                }
+            }
+            
+            enum Group {
+                case format
+                case genre
+                
+                var asString: String
+                {
+                    var posibility = ""
+                    switch self {
+                    case .format:
+                        posibility = "format"
+                    case .genre:
+                        posibility = "genre"
+                    }
+                    return posibility
                 }
             }
             
