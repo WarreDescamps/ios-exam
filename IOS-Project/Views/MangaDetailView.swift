@@ -11,6 +11,7 @@ import WrappingHStack
 struct MangaDetailView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @Environment(\.colorScheme) var colorScheme
+    @StateObject var mangadex = SingletonManager.instance(key: "detailView")
     var manga: Manga
     var parentTitle: String
     var onDismiss: () -> Void
@@ -133,9 +134,25 @@ struct MangaDetailView: View {
                 .onTapGesture {
                     collapse.toggle()
                 }
+                
+                HStack {
+                    Text("\(mangadex.chapters.count) chapters")
+                        .font(.system(size: 20))
+                    Spacer()
+                }
+                LazyVStack {
+                    ForEach(mangadex.chapters) { chapter in
+                        HStack {
+                            Text("Chapter \(chapter.number)\(chapter.title == nil ? "" : ": \(chapter.title!)")")
+                                .lineLimit(1)
+                            Spacer()
+                        }
+                    }
+                }
             }
         }
         .onAppear {
+            mangadex.getChapters(mangaId: manga.id)
             MangaManager.shared.getManga(completion: { self.isInLibrary = $0.contains(where: { $0 == manga.id }) })
         }
         .padding(.horizontal)

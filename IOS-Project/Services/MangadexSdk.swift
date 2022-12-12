@@ -9,9 +9,48 @@ import SwiftUI
 
 class MangadexSdk: ObservableObject {
     @Published var manga = [Manga]()
+    @Published var chapters = [Chapter]()
     @State private var page = 0
-    @State private var total = 0
+    @State private var mangaTotal = 0
     @State private var lastQuery: String? = nil
+    
+    func getChapters(mangaId: String, page: Int = 0) {
+        if page == 0 {
+            self.chapters.removeAll()
+        }
+        
+        Api.Sdk.shared
+            .get(.chapters(id: mangaId)) { (result: Result<Api.Types.Response.MangadexChapter, Api.Types.Error>) in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let success):
+                        var data = success.data
+                        while data.count > 0 {
+                            let min = data.min { a, b in Float(a.attributes.chapter ?? "0") ?? .infinity < Float(b.attributes.chapter ?? "0") ?? .infinity }
+                            if let min = min {
+                                let allPossibleOfMin = data.filter { data in data.attributes.chapter == min.attributes.chapter && data.attributes.pages > 0 }
+                                let maxOfMin = allPossibleOfMin.max { a, b in a.attributes.updatedAt < b.attributes.updatedAt }
+                                if let maxOfMin = maxOfMin {
+                                    if self.chapters.allSatisfy({ chapter in chapter.id != maxOfMin.id }) {
+                                        self.chapters.append(Chapter(id: maxOfMin.id, number: maxOfMin.attributes.chapter ?? "0", title: maxOfMin.attributes.title, pageUrls: []))
+                                    }
+                                }
+                                data.removeAll { dataInArr in dataInArr.attributes.chapter == min.attributes.chapter }
+                            }
+                            else {
+                                break
+                            }
+                        }
+                        let next = success.total - ((page + 1) * 100)
+                        if next > 0 {
+                            self.getChapters(mangaId: mangaId, page: page + 1)
+                        }
+                    case .failure(let failure):
+                        print(failure.localizedDescription)
+                    }
+                }
+            }
+    }
     
     private func appendWithAuthor(manga: Manga) {
         var manga = manga
@@ -53,7 +92,7 @@ class MangadexSdk: ObservableObject {
     }
     
     private func appendManga(_ success: Api.Types.Response.MangadexManga) {
-        self.total = success.total
+        self.mangaTotal = success.total
         for result in success.data {
             if self.manga.allSatisfy({ $0.id != result.id }) {
                 let title = result.attributes.title["en"]

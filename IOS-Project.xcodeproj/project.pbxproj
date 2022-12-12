@@ -28,6 +28,7 @@
 		698D14ED293E885300BCC39D /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698D14EA293E885300BCC39D /* Api.swift */; };
 		698D14EE293E885300BCC39D /* ApiTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698D14EB293E885300BCC39D /* ApiTypes.swift */; };
 		698E187929465FE40085CA05 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 698E187829465FE40085CA05 /* WrappingHStack */; };
+		698E187B2946723D0085CA05 /* Chapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E187A2946723D0085CA05 /* Chapter.swift */; };
 		69E4FCF52943CAD400E1486D /* MangaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E4FCF42943CAD400E1486D /* MangaDetailView.swift */; };
 		69E4FCF72943CB0700E1486D /* DebugConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E4FCF62943CB0700E1486D /* DebugConstants.swift */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		698D14E9293E885300BCC39D /* ApiSdk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiSdk.swift; sourceTree = "<group>"; };
 		698D14EA293E885300BCC39D /* Api.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		698D14EB293E885300BCC39D /* ApiTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiTypes.swift; sourceTree = "<group>"; };
+		698E187A2946723D0085CA05 /* Chapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chapter.swift; sourceTree = "<group>"; };
 		69E4FCF42943CAD400E1486D /* MangaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailView.swift; sourceTree = "<group>"; };
 		69E4FCF62943CB0700E1486D /* DebugConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -179,6 +181,7 @@
 			children = (
 				69765D95293A977200F662FC /* Manga.swift */,
 				69E4FCF62943CB0700E1486D /* DebugConstants.swift */,
+				698E187A2946723D0085CA05 /* Chapter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				698D14D6293E5A3700BCC39D /* DiscoveryView.swift in Sources */,
 				69765D99293A98C600F662FC /* MangaManager.swift in Sources */,
 				698D14EE293E885300BCC39D /* ApiTypes.swift in Sources */,
+				698E187B2946723D0085CA05 /* Chapter.swift in Sources */,
 				698D14EC293E885300BCC39D /* ApiSdk.swift in Sources */,
 				698D14DD293E5C7C00BCC39D /* MangadexSdk.swift in Sources */,
 				3E285F012930FF63003D0DA4 /* LibraryView.swift in Sources */,

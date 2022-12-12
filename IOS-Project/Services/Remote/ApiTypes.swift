@@ -69,6 +69,25 @@ extension Api {
                 }
             }
             
+            struct MangadexChapter: Decodable {
+                var data: [Data]
+                var limit: Int
+                var total: Int
+                
+                struct Data: Decodable {
+                    var id: String
+                    var attributes: Attributes
+                    
+                    struct Attributes: Decodable {
+                        var title: String?
+                        var chapter: String?
+                        var translatedLanguage: String
+                        var pages: Int
+                        var updatedAt: Date
+                    }
+                }
+            }
+            
             enum Group {
                 case format
                 case genre
@@ -113,6 +132,7 @@ extension Api {
             case mangaById(mangaIds: [String])
             case cover(id: String)
             case authors(ids: [String])
+            case chapters(id: String, page: Int = 0)
             
             var url: URL {
                 var components = URLComponents()
@@ -165,6 +185,15 @@ extension Api {
                     else {
                         components.queryItems = [URLQueryItem(name: "limit", value: "0")]
                     }
+                case .chapters(let id, let page):
+                    components.path = "/chapter"
+                    components.queryItems = [
+                        URLQueryItem(name: "order[chapter]", value: "asc"),
+                        URLQueryItem(name: "manga", value: id),
+                        URLQueryItem(name: "limit", value: "100"),
+                        URLQueryItem(name: "offset", value: "\(page * 100)"),
+                        URLQueryItem(name: "translatedLanguage[]", value: "en")
+                    ]
                 }
                 return components.url!
             }

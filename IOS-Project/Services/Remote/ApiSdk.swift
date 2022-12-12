@@ -40,6 +40,7 @@ extension Api {
                     else {
                         if let data = data {
                             do {
+                                self.decoder.dateDecodingStrategy = .iso8601
                                 let result =  try self.decoder.decode(Response.self, from: data)
                                 callback?(.success(result))
                             }
