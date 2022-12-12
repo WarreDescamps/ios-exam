@@ -32,7 +32,7 @@ class MangadexSdk: ObservableObject {
                                 let maxOfMin = allPossibleOfMin.max { a, b in a.attributes.updatedAt < b.attributes.updatedAt }
                                 if let maxOfMin = maxOfMin {
                                     if self.chapters.allSatisfy({ chapter in chapter.id != maxOfMin.id }) {
-                                        self.chapters.append(Chapter(id: maxOfMin.id, number: maxOfMin.attributes.chapter ?? "0", title: maxOfMin.attributes.title, pageUrls: []))
+                                        self.chapters.append(Chapter(id: maxOfMin.id, number: maxOfMin.attributes.chapter ?? "0", title: maxOfMin.attributes.title, updatedAt: maxOfMin.attributes.updatedAt))
                                     }
                                 }
                                 data.removeAll { dataInArr in dataInArr.attributes.chapter == min.attributes.chapter }

@@ -19,6 +19,7 @@ struct MangaDetailView: View {
     @State private var collapse = true
     @State private var screenWidth: CGFloat = 0
     @State private var screenHeight: CGFloat = 0
+    @State private var sortIncreasing = false
     
     init(manga: Manga, onDismiss: @escaping () -> Void, parentTitle: String = "") {
         self.manga = manga
@@ -83,21 +84,31 @@ struct MangaDetailView: View {
                 }
                 
                 VStack {
-                    Text(manga.description)
-                        .if(collapse) { view in
-                            view
-                                .lineLimit(3)
-                                .overlay(alignment: .bottom) {
-                                    ZStack {
-                                        LinearGradient(gradient: Gradient(colors: [colorScheme == .dark ? .black : .white, .clear]), startPoint: .bottom, endPoint: .top)
-                                            .frame(height: 60.0)
-                                            .overlay(alignment: .bottom) {
-                                                Label("Collapse", systemImage: "chevron.down")
-                                                    .labelStyle(.iconOnly)
-                                            }
+                    VStack {
+                        Text(manga.description)
+                            .if(collapse) { view in
+                                view
+                                    .lineLimit(3)
+                                    .overlay(alignment: .bottom) {
+                                        ZStack {
+                                            LinearGradient(gradient: Gradient(colors: [colorScheme == .dark ? .black : .white, .clear]), startPoint: .bottom, endPoint: .top)
+                                                .frame(height: 60.0)
+                                                .overlay(alignment: .bottom) {
+                                                    Label("Collapse", systemImage: "chevron.down")
+                                                        .labelStyle(.iconOnly)
+                                                }
+                                        }
                                     }
-                                }
+                            }
+                        if !collapse {
+                            Label("Collapse", systemImage: "chevron.up")
+                                .labelStyle(.iconOnly)
+                                .padding(.vertical, 1)
                         }
+                    }
+                    .onTapGesture {
+                        collapse.toggle()
+                    }
                     
                     if collapse {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -116,10 +127,6 @@ struct MangaDetailView: View {
                         }
                     }
                     else {
-                        Label("Collapse", systemImage: "chevron.up")
-                            .labelStyle(.iconOnly)
-                            .padding(.vertical, 1)
-                        
                         WrappingHStack(manga.genres, id: \.self, spacing: .constant(20), lineSpacing: 10) {
                             Text($0)
                                 .background {
@@ -128,11 +135,9 @@ struct MangaDetailView: View {
                                         .scaleEffect(1.25)
                                 }
                         }
+                        .padding(.vertical, 10)
                         .padding(.horizontal, 7)
                     }
-                }
-                .onTapGesture {
-                    collapse.toggle()
                 }
                 
                 HStack {
@@ -141,12 +146,8 @@ struct MangaDetailView: View {
                     Spacer()
                 }
                 LazyVStack {
-                    ForEach(mangadex.chapters) { chapter in
-                        HStack {
-                            Text("Chapter \(chapter.number)\(chapter.title == nil ? "" : ": \(chapter.title!)")")
-                                .lineLimit(1)
-                            Spacer()
-                        }
+                    ForEach(sortArray(array: mangadex.chapters, selector: { $0.number }, ascending: sortIncreasing)) { chapter in
+                        ChapterRow(chapter: chapter)
                     }
                 }
             }
@@ -164,6 +165,32 @@ struct MangaDetailView: View {
             Label(parentTitle, systemImage: "chevron.backward")
                 .labelStyle(.titleAndIcon)
         })
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { sortIncreasing.toggle() }) {
+                    Label("Sort", systemImage: "line.horizontal.3.decrease")
+                        .if(sortIncreasing) { view in
+                            view.rotationEffect(.degrees(180))
+                        }
+                }
+                .labelStyle(.iconOnly)
+            }
+        }
+    }
+    
+    private func sortArray<T>(array: [T], selector: (T) -> String, ascending: Bool) -> [T] {
+        let paddingLength = array.map({ selector($0) }).map({ $0.count }).max() ?? 0
+
+        return array.sorted { (item1, item2) in
+            let value1 = selector(item1).leftPadding(toLength: paddingLength, withPad: "0")
+            let value2 = selector(item2).leftPadding(toLength: paddingLength, withPad: "0")
+
+            if ascending {
+                return value1 < value2
+            } else {
+                return value1 > value2
+            }
+        }
     }
 }
 
@@ -178,5 +205,16 @@ struct MangaDetailView_PreviewContainer: View {
     
     var body: some View {
         MangaDetailView(manga: DebugConstants.worldTrigger, onDismiss: {isShown = false})
+    }
+}
+
+extension String {
+    func leftPadding(toLength: Int, withPad character: Character) -> String {
+        let stringLength = self.count
+        if stringLength < toLength {
+            return String(repeatElement(character, count: toLength - stringLength)) + self
+        } else {
+            return String(self.suffix(toLength))
+        }
     }
 }

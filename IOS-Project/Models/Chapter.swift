@@ -11,5 +11,5 @@ struct Chapter: Identifiable, Hashable {
     var id: String
     var number: String
     var title: String?
-    var pageUrls: [String]
+    var updatedAt: Date
 }
