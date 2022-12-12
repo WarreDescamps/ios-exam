@@ -20,7 +20,7 @@ class MangadexSdk: ObservableObject {
         }
         
         Api.Sdk.shared
-            .get(.chapters(id: mangaId)) { (result: Result<Api.Types.Response.MangadexChapter, Api.Types.Error>) in
+            .get(.chapters(id: mangaId, page: page)) { (result: Result<Api.Types.Response.MangadexChapter, Api.Types.Error>) in
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let success):
