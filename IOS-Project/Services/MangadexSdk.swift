@@ -10,9 +10,29 @@ import SwiftUI
 class MangadexSdk: ObservableObject {
     @Published var manga = [Manga]()
     @Published var chapters = [Chapter]()
+    @Published var pages = [String]()
     @State private var page = 0
     @State private var mangaTotal = 0
     @State private var lastQuery: String? = nil
+    
+    func getPages(chapterId: String) {
+        pages.removeAll()
+        
+        Api.Sdk.shared
+            .get(.pages(id: chapterId)) { (result: Result<Api.Types.Response.MangadexPages, Api.Types.Error>) in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let success):
+                        for page in success.chapter.data {
+                            let pageUrl = "\(success.baseUrl)/data/\(success.chapter.hash)/\(page)"
+                            self.pages.append(pageUrl)
+                        }
+                    case .failure(let failure):
+                        print(failure.localizedDescription)
+                    }
+                }
+            }
+    }
     
     func getChapters(mangaId: String, page: Int = 0) {
         if page == 0 {

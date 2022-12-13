@@ -88,6 +88,16 @@ extension Api {
                 }
             }
             
+            struct MangadexPages: Decodable {
+                var baseUrl: String
+                var chapter: Chapter
+                
+                struct Chapter: Decodable {
+                    var hash: String
+                    var data: [String]
+                }
+            }
+            
             enum Group {
                 case format
                 case genre
@@ -133,6 +143,7 @@ extension Api {
             case cover(id: String)
             case authors(ids: [String])
             case chapters(id: String, page: Int = 0)
+            case pages(id: String)
             
             var url: URL {
                 var components = URLComponents()
@@ -194,6 +205,8 @@ extension Api {
                         URLQueryItem(name: "offset", value: "\(page * 100)"),
                         URLQueryItem(name: "translatedLanguage[]", value: "en")
                     ]
+                case .pages(let id):
+                    components.path = "/at-home/server/\(id)"
                 }
                 return components.url!
             }

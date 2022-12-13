@@ -72,7 +72,9 @@ struct MangaDetailView: View {
                     else {
                         MangaManager.shared.addManga(manga: manga)
                     }
-                    isInLibrary.toggle()
+                    withAnimation {
+                        isInLibrary.toggle()
+                    }
                 } label: {
                     VStack {
                         Image(systemName: isInLibrary ? "heart.fill" : "heart")
@@ -147,7 +149,13 @@ struct MangaDetailView: View {
                 }
                 LazyVStack {
                     ForEach(sortArray(array: mangadex.chapters, selector: { $0.number }, ascending: sortIncreasing)) { chapter in
-                        ChapterRow(chapter: chapter)
+                        NavigationLink {
+                            ChapterReaderView(chapter: chapter)
+                        } label: {
+                            ChapterRow(chapter: chapter)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .navigationBarBackButtonHidden(true)
                     }
                 }
             }
@@ -165,6 +173,7 @@ struct MangaDetailView: View {
             Label(parentTitle, systemImage: "chevron.backward")
                 .labelStyle(.titleAndIcon)
         })
+        .navigationTitle("")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(action: { sortIncreasing.toggle() }) {
