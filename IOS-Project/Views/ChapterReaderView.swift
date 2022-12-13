@@ -146,12 +146,29 @@ struct ChapterReaderView: View {
             SingletonManager.instance(key: "readerView").getPages(chapterId: chapter.id)
         }
         .navigationTitle("Chapter \(chapter.number)\(chapter.title == nil ? "" : ": \(chapter.title!)")")
-        .navigationBarItems(leading: Button(action : {
-            self.mode.wrappedValue.dismiss()
-        }){
-            Label("Back", systemImage: "arrow.left")
-                .labelStyle(.iconOnly)
-        })
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { self.mode.wrappedValue.dismiss() }) {
+                    Label("Back", systemImage: "arrow.left")
+                        .labelStyle(.iconOnly)
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu {
+                    Button(action: { reader = .manga }) {
+                        Text("Manga")
+                    }
+                    Button(action: { reader = .webtoon }) {
+                        Text("Webtoon")
+                    }
+                    Button(action: { reader = .manhwa }) {
+                        Text("Manhwa")
+                    }
+                } label: {
+                    Label("Reader Mode", systemImage: "book")
+                }
+            }
+        }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar(focusMode ? .hidden : .visible, for: .navigationBar)
