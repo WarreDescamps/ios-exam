@@ -15,7 +15,7 @@ struct ChapterReaderView: View {
     @State private var page = 0
     @State private var screenWidth: CGFloat = 0
     @State private var screenHeight: CGFloat = 0
-    @State private var reader: readerType = .manhwa
+    @State private var reader: readerType = .manga
     var chapter: Chapter
     
     init(chapter: Chapter){
@@ -24,6 +24,7 @@ struct ChapterReaderView: View {
     
     var body: some View {
         ZStack {
+            Color.black
             GeometryReader { geo in
                 Color.clear
                     .onAppear {
@@ -31,7 +32,6 @@ struct ChapterReaderView: View {
                         screenHeight = geo.size.height
                     }
             }
-            Color.black
             
             if reader == .manga {
                 VStack {
@@ -66,7 +66,7 @@ struct ChapterReaderView: View {
                         let verticalAmount = value.translation.height
                         
                         if abs(horizontalAmount) > abs(verticalAmount) {
-                            if horizontalAmount < 0 {
+                            if horizontalAmount > 0 {
                                 if page < mangadex.pages.count - 1 {
                                     page += 1
                                 }
