@@ -16,10 +16,17 @@ struct ChapterReaderView: View {
     @State private var screenWidth: CGFloat = 0
     @State private var screenHeight: CGFloat = 0
     @State private var reader: readerType = .manga
-    var chapter: Chapter
     
-    init(chapter: Chapter){
-        self.chapter = chapter
+    @State var previousChapter: Chapter?
+    @State var currentChapter: Chapter
+    @State var nextChapter: Chapter?
+    var chapterCallback: (() -> [Chapter])? = nil
+    
+    init(previousChapter: Chapter?, currentChapter: Chapter, nextChapter: Chapter?, chapterCallback: @escaping () -> [Chapter]) {
+        self.previousChapter = previousChapter
+        self.currentChapter = currentChapter
+        self.nextChapter = nextChapter
+        self.chapterCallback = chapterCallback
     }
     
     var body: some View {
@@ -36,15 +43,16 @@ struct ChapterReaderView: View {
             if reader == .manga {
                 VStack {
                     Spacer()
-                    page(url: mangadex.pages.isEmpty ? "" : mangadex.pages[page])
+                    TabView(selection: $page) {
+                        pages(links: mangadex.pages)
+                    }
+                    .tabViewStyle(PageTabViewStyle())
                     Spacer()
                 }
                 HStack(spacing: 0) {
-                    Button(action: {if page < mangadex.pages.count - 1 {
-                        page += 1
-                    }}) {
+                    Button(action: nextPage) {
                         Rectangle()
-                            .foregroundColor(.clear)
+                            .foregroundColor(.orange)
                             .frame(width: screenWidth * 0.25)
                     }
                     Button(action: {focusMode.toggle()}) {
@@ -52,40 +60,18 @@ struct ChapterReaderView: View {
                             .foregroundColor(.clear)
                             .frame(width: screenWidth * 0.5)
                     }
-                    Button(action: {if page > 0 {
-                        page -= 1
-                    }}) {
+                    Button(action: prevPage) {
                         Rectangle()
-                            .foregroundColor(.clear)
+                            .foregroundColor(.orange)
                             .frame(width: screenWidth * 0.25)
                     }
                 }
-                .gesture(DragGesture(minimumDistance: 5, coordinateSpace: .global)
-                    .onEnded { value in
-                        let horizontalAmount = value.translation.width
-                        let verticalAmount = value.translation.height
-                        
-                        if abs(horizontalAmount) > abs(verticalAmount) {
-                            if horizontalAmount > 0 {
-                                if page < mangadex.pages.count - 1 {
-                                    page += 1
-                                }
-                            }
-                            else {
-                                if page > 0 {
-                                    page -= 1
-                                }
-                            }
-                        }
-                    })
             }
             
             if reader == .webtoon {
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        ForEach(mangadex.pages, id: \.self) { url in
-                            page(url: url)
-                        }
+                        pages(links: mangadex.pages)
                     }
                 }
                 Button(action: { focusMode.toggle() }) {
@@ -97,13 +83,11 @@ struct ChapterReaderView: View {
             if reader == .manhwa {
                 VStack {
                     Spacer()
-                    page(url: mangadex.pages.isEmpty ? "" : mangadex.pages[page])
+                    pages(links: mangadex.pages)
                     Spacer()
                 }
                 VStack(spacing: 0) {
-                    Button(action: {if page > 0 {
-                        page -= 1
-                    }}) {
+                    Button(action: prevPage) {
                         Rectangle()
                             .foregroundColor(.clear)
                             .frame(height: screenHeight * 0.2)
@@ -113,39 +97,19 @@ struct ChapterReaderView: View {
                             .foregroundColor(.clear)
                             .frame(height: screenHeight * 0.6)
                     }
-                    Button(action: {if page < mangadex.pages.count - 1 {
-                        page += 1
-                    }}) {
+                    Button(action: nextPage) {
                         Rectangle()
                             .foregroundColor(.clear)
                             .frame(height: screenHeight * 0.2)
                     }
                 }
-                .gesture(DragGesture(minimumDistance: 5, coordinateSpace: .global)
-                    .onEnded { value in
-                        let horizontalAmount = value.translation.width
-                        let verticalAmount = value.translation.height
-                        
-                        if abs(horizontalAmount) < abs(verticalAmount) {
-                            if verticalAmount < 0 {
-                                if page < mangadex.pages.count - 1 {
-                                    page += 1
-                                }
-                            }
-                            else {
-                                if page > 0 {
-                                    page -= 1
-                                }
-                            }
-                        }
-                    })
             }
         }
         .ignoresSafeArea(.all, edges: focusMode ? .all : .horizontal)
         .onAppear {
-            SingletonManager.instance(key: "readerView").getPages(chapterId: chapter.id)
+            SingletonManager.instance(key: "readerView").getPages(chapterId: currentChapter.id)
         }
-        .navigationTitle("Chapter \(chapter.number)\(chapter.title == nil ? "" : ": \(chapter.title!)")")
+        .navigationTitle("Chapter \(currentChapter.number)\(currentChapter.title == nil ? "" : ": \(currentChapter.title!)")")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: { self.mode.wrappedValue.dismiss() }) {
@@ -175,17 +139,68 @@ struct ChapterReaderView: View {
         .toolbar(.hidden, for: .tabBar)
     }
     
-    func page(url: String) -> some View {
-        return AsyncImage(url: URL(string: url),
-                            content: { image in image.resizable() },
-                            placeholder: {
-                     ZStack {
-                         Color.gray
-                         ProgressView()
-                             .progressViewStyle(.circular)
-                     }
-                 })
-        .aspectRatio(contentMode: .fit)
+    func prevPage() {
+        if page < mangadex.pages.count - 1 {
+            page += 1
+        }
+        else {
+            toPrevChapter()
+            SingletonManager.instance(key: "readerView").getPages(chapterId: currentChapter.id)
+            page = mangadex.pages.count - 1
+        }
+    }
+    
+    func toPrevChapter() {
+        if let previousChapter = self.previousChapter {
+            self.nextChapter = self.currentChapter
+            self.currentChapter = previousChapter
+            if let chapterCallback = chapterCallback {
+                let chapters = chapterCallback()
+                let prevIndex = chapters.firstIndex(where: { chapter in chapter.id == self.currentChapter.id }) ?? 0 - 1
+                self.previousChapter = prevIndex > 0 ? nil : chapters[prevIndex]
+            }
+        }
+    }
+    
+    func nextPage() {
+        if page > 0 {
+            page -= 1
+        }
+        else {
+            toNextChapter()
+            page = 0
+        }
+    }
+    
+    func toNextChapter() {
+        if let nextChapter = self.nextChapter {
+            self.previousChapter = self.currentChapter
+            self.currentChapter = nextChapter
+            if let chapterCallback = chapterCallback {
+                let chapters = chapterCallback()
+                let nextIndex = chapters.firstIndex(where: { chapter in chapter.id == self.currentChapter.id }) ?? -2 + 1
+                self.nextChapter = nextIndex == -1 ? nil : (nextIndex < chapters.count ? chapters[nextIndex] : nil)
+            }
+        }
+    }
+    
+    func pages(links: [String]) -> some View {
+        ForEach(links.enumerated().reversed().reversed(), id: \.offset) { index, url in
+            AsyncImage(url: URL(string: links.isEmpty ? "" : url),
+                              content: { image in
+                                   image
+                                       .resizable()
+                                       .aspectRatio(contentMode: .fit)
+                                       .tag(index)
+                               },
+                              placeholder: {
+                       ZStack {
+                           Color.gray
+                           ProgressView()
+                               .progressViewStyle(.circular)
+                       }
+            })
+        }
     }
     
     enum readerType {
@@ -197,6 +212,19 @@ struct ChapterReaderView: View {
 
 struct ChapterReaderView_Previews: PreviewProvider {
     static var previews: some View {
-        ChapterReaderView(chapter: DebugConstants.chapter)
+        ChapterReaderView_PreviewContainer()
+    }
+}
+
+
+struct ChapterReaderView_PreviewContainer: View {
+    var mangadex = SingletonManager.instance(key: "preview")
+    
+    init() {
+        SingletonManager.instance(key: "preview").getChapters(mangaId: DebugConstants.worldTrigger.id)
+    }
+    
+    var body: some View {
+        ChapterReaderView(previousChapter: DebugConstants.prevChapter, currentChapter: DebugConstants.currentChapter, nextChapter: DebugConstants.nextChapter, chapterCallback: { mangadex.chapters })
     }
 }

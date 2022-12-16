@@ -40,6 +40,6 @@ struct ChapterRow: View {
 
 struct ChapterRow_Previews: PreviewProvider {
     static var previews: some View {
-        ChapterRow(chapter: DebugConstants.chapter)
+        ChapterRow(chapter: DebugConstants.currentChapter)
     }
 }

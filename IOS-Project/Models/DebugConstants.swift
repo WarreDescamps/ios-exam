@@ -13,7 +13,9 @@ enum DebugConstants {
     
     static let userId = "xJfGEKFVB4e379fNXgQ0luNqEmI2"
     
-    static let chapter = Chapter(id: "8b5af4d6-1c14-4848-b9d5-122b42bba786", number: "1", title: "Mikumo Osamu (Part 1)", updatedAt: chapterDate())
+    static let prevChapter = Chapter(id: "8b5af4d6-1c14-4848-b9d5-122b42bba786", number: "1", title: "Mikumo Osamu (Part 1)", updatedAt: chapterDate())
+    static let currentChapter = Chapter(id: "227a7d66-fcd6-4711-8818-68f67b7c7502", number: "2", title: "Kuga Yuuma (Part 1)", updatedAt: chapterDate())
+    static let nextChapter = Chapter(id: "39c8e983-d5ce-499c-bb8a-a4a429dbbe48", number: "3", title: "Kuga Yuuma (Part 2)", updatedAt: chapterDate())
     
     private static func chapterDate() -> Date {
         do {
