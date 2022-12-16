@@ -16,15 +16,12 @@ struct ChapterReaderView: View {
     @State private var screenWidth: CGFloat = 0
     @State private var screenHeight: CGFloat = 0
     @State private var reader: readerType = .manga
-    
-    @State var previousChapter: Chapter?
-    @State var currentChapter: Chapter
-    @State var nextChapter: Chapter?
-    var chapterCallback: () -> [Chapter]
+    @State var chapter: Chapter
     
     var body: some View {
         ZStack {
             Color.black
+            
             GeometryReader { geo in
                 Color.clear
                     .onAppear {
@@ -33,19 +30,22 @@ struct ChapterReaderView: View {
                     }
             }
             
-            if reader == .manga {
+            switch reader {
+            case .manga:
                 VStack {
                     Spacer()
                     TabView(selection: $page) {
                         pages(links: mangadex.pages)
+                            .rotationEffect(.degrees(-180))
                     }
-                    .tabViewStyle(PageTabViewStyle())
+                    .rotationEffect(.degrees(180))
+                    .tabViewStyle(.page(indexDisplayMode: focusMode ? .never : .automatic))
                     Spacer()
                 }
                 HStack(spacing: 0) {
                     Button(action: nextPage) {
                         Rectangle()
-                            .foregroundColor(.orange)
+                            .foregroundColor(.clear)
                             .frame(width: screenWidth * 0.25)
                     }
                     Button(action: {focusMode.toggle()}) {
@@ -55,28 +55,24 @@ struct ChapterReaderView: View {
                     }
                     Button(action: prevPage) {
                         Rectangle()
-                            .foregroundColor(.orange)
+                            .foregroundColor(.clear)
                             .frame(width: screenWidth * 0.25)
                     }
                 }
-            }
-            
-            if reader == .webtoon {
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        pages(links: mangadex.pages)
-                    }
-                }
-                Button(action: { focusMode.toggle() }) {
-                    Rectangle()
-                        .foregroundColor(.clear)
-                }
-            }
-            
-            if reader == .manhwa {
+            case .webtoon:
                 VStack {
                     Spacer()
-                    pages(links: mangadex.pages)
+                    TabView(selection: $page) {
+                        pages(links: mangadex.pages)
+                            .frame(width: screenWidth, height: screenHeight)
+                            .rotationEffect(.degrees(-90))
+                            .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
+                    }
+                    .frame(width: screenWidth, height: screenHeight)
+                    .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
+                    .rotationEffect(.degrees(90))
+                    .offset(x: screenWidth)
+                    .tabViewStyle(.page(indexDisplayMode: .never))
                     Spacer()
                 }
                 VStack(spacing: 0) {
@@ -98,82 +94,58 @@ struct ChapterReaderView: View {
                 }
             }
         }
-        .ignoresSafeArea(.all, edges: focusMode ? .all : .horizontal)
+        .ignoresSafeArea(.all, edges: focusMode ? .vertical : .horizontal)
+        .overlay(alignment: .topLeading) {
+            if(!focusMode) {
+                HStack {
+                    Button(action: {
+                        self.mode.wrappedValue.dismiss()
+                    }) {
+                        Label("Back", systemImage: "arrow.left")
+                            .labelStyle(.iconOnly)
+                    }
+                    Spacer()
+                    Text("Chapter \(chapter.number)\(chapter.title == nil ? "" : ": \(chapter.title!)")")
+                        .lineLimit(1)
+                    Spacer()
+                    Menu {
+                        Button(action: { reader = .manga }) {
+                            Text("Manga")
+                        }
+                        Button(action: { reader = .webtoon }) {
+                            Text("Webtoon")
+                        }
+                    } label: {
+                        Label("Reader Mode", systemImage: "book")
+                            .labelStyle(.iconOnly)
+                    }
+                }
+                .padding(.all)
+                .background {
+                    colorScheme == .dark ? Color.black : Color.white
+                }
+            }
+        }
         .onAppear {
-            SingletonManager.instance(key: "readerView").getPages(chapterId: currentChapter.id)
+            SingletonManager.instance(key: "readerView").getPages(chapterId: chapter.id)
         }
-        .navigationTitle("Chapter \(currentChapter.number)\(currentChapter.title == nil ? "" : ": \(currentChapter.title!)")")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { self.mode.wrappedValue.dismiss() }) {
-                    Label("Back", systemImage: "arrow.left")
-                        .labelStyle(.iconOnly)
-                }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Menu {
-                    Button(action: { reader = .manga }) {
-                        Text("Manga")
-                    }
-                    Button(action: { reader = .webtoon }) {
-                        Text("Webtoon")
-                    }
-                    Button(action: { reader = .manhwa }) {
-                        Text("Manhwa")
-                    }
-                } label: {
-                    Label("Reader Mode", systemImage: "book")
-                }
-            }
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar(focusMode ? .hidden : .visible, for: .navigationBar)
+        .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
     }
     
-    func prevPage() {
+    private func prevPage() {
         if page > 0 {
             page -= 1
         }
-        else {
-            toPrevChapter()
-            SingletonManager.instance(key: "readerView").getPages(chapterId: currentChapter.id)
-            page = mangadex.pages.count - 1
-        }
     }
     
-    func toPrevChapter() {
-        if let previousChapter = self.previousChapter {
-            self.nextChapter = self.currentChapter
-        self.currentChapter = previousChapter
-            let chapters = chapterCallback()
-            let prevIndex = chapters.firstIndex(where: { chapter in chapter.id == self.currentChapter.id }) ?? 0 - 1
-            self.previousChapter = prevIndex > 0 ? nil : chapters[prevIndex]
-        }
-    }
-    
-    func nextPage() {
+    private func nextPage() {
         if page < mangadex.pages.count - 1 {
             page += 1
         }
-        else {
-            toNextChapter()
-            page = 0
-        }
     }
     
-    func toNextChapter() {
-        if let nextChapter = self.nextChapter {
-            self.previousChapter = self.currentChapter
-            self.currentChapter = nextChapter
-            let chapters = chapterCallback()
-            let nextIndex = chapters.firstIndex(where: { chapter in chapter.id == self.currentChapter.id }) ?? -2 + 1
-            self.nextChapter = nextIndex == -1 ? nil : (nextIndex < chapters.count ? chapters[nextIndex] : nil)
-        }
-    }
-    
-    func pages(links: [String]) -> some View {
+    private func pages(links: [String]) -> some View {
         ForEach(links.enumerated().reversed().reversed(), id: \.offset) { index, url in
             AsyncImage(url: URL(string: links.isEmpty ? "" : url),
                               content: { image in
@@ -184,7 +156,6 @@ struct ChapterReaderView: View {
                                },
                               placeholder: {
                        ZStack {
-                           Color.gray
                            ProgressView()
                                .progressViewStyle(.circular)
                        }
@@ -195,7 +166,6 @@ struct ChapterReaderView: View {
     enum readerType {
         case webtoon
         case manga
-        case manhwa
     }
 }
 
@@ -214,6 +184,6 @@ struct ChapterReaderView_PreviewContainer: View {
     }
     
     var body: some View {
-        ChapterReaderView(previousChapter: DebugConstants.prevChapter, currentChapter: DebugConstants.currentChapter, nextChapter: DebugConstants.nextChapter, chapterCallback: { mangadex.chapters })
+        ChapterReaderView(chapter: DebugConstants.currentChapter)
     }
 }

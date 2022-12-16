@@ -13,16 +13,16 @@ struct ContentView: View {
     @State private var password = ""
     @State private var isLoggedIn = false
     
-    #if DEBUG
-    init() {
-        do {
-            try Auth.auth().signOut()
-        }
-        catch {
-            
-        }
-    }
-    #endif
+//    #if DEBUG
+//    init() {
+//        do {
+//            try Auth.auth().signOut()
+//        }
+//        catch {
+//            
+//        }
+//    }
+//    #endif
     
     var body: some View {
         if isLoggedIn {
