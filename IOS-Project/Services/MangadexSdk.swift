@@ -11,9 +11,9 @@ class MangadexSdk: ObservableObject {
     @Published var manga = [Manga]()
     @Published var chapters = [Chapter]()
     @Published var pages = [String]()
-    @State private var page = 0
-    @State private var mangaTotal = 0
-    @State private var lastQuery: String? = nil
+    private var page = 0
+    private var mangaTotal = 0
+    private var lastQuery: String? = nil
     
     func getPages(chapterId: String) {
         pages.removeAll()
@@ -197,7 +197,7 @@ class MangadexSdk: ObservableObject {
     }
     
     func loadNextPage() {
-        self.page = self.page + 1
+        self.page += 1
         fetchManga(query: lastQuery)
     }
 }
