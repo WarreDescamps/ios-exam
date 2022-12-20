@@ -59,7 +59,7 @@ struct HistoryRow: View {
                                     }
                                 }
                     )
-                    .aspectRatio(0.66, contentMode: .fit)
+                    .aspectRatio(0.7, contentMode: .fit)
                     .frame(width: screenWidth * 0.15)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
@@ -72,7 +72,7 @@ struct HistoryRow: View {
                     }
                     if let date = history.lastRead {
                         HStack {
-                            Text("Ch. \(history.chapters.sorted().first ?? "")")
+                            Text("Ch. \(history.chapters.sorted().last ?? "")")
                             Text("-")
                             Text(date, style: .time)
                             Spacer()

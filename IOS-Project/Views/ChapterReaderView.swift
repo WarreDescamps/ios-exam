@@ -69,7 +69,7 @@ struct ChapterReaderView: View {
                 }
             case .webtoon:
                 ScrollView {
-                    VStack(spacing: 0) {
+                    LazyVStack(spacing: 0) {
                         pages(links: mangadex.pages)
                     }
                 }
@@ -227,10 +227,11 @@ struct ChapterReaderView: View {
                        }
             })
         }
-        Text("Last page")
+        Text("End of Chapter \(chapter.number)")
+            .font(.system(size: 25, weight: .bold))
             .foregroundColor(.white)
             .tag(links.count + 1)
-            .padding()
+            .padding(.all, 20)
     }
     
     struct Link: Identifiable, Hashable {
@@ -261,6 +262,7 @@ struct ChapterReaderView_PreviewContainer: View {
     
     init() {
         SingletonManager.instance(key: "preview").getChapters(mangaId: DebugConstants.worldTrigger.id)
+        _ = SingletonManager.userInstance(userId: DebugConstants.userId)
     }
     
     var body: some View {

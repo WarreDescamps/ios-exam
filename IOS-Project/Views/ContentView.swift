@@ -33,7 +33,7 @@ struct ContentView: View {
                     }
                 HistoryView()
                     .tabItem() {
-                        Label("History", systemImage: "memories")
+                        Label("History", systemImage: "clock.arrow.circlepath")
                     }
                 LibraryView()
                     .tabItem() {

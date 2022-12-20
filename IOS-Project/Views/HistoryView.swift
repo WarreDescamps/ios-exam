@@ -31,11 +31,12 @@ struct HistoryView: View {
                         Color.clear
                     }
                 }
+                .toolbar(.visible, for: .navigationBar)
+                .toolbar(.visible, for: .tabBar)
+                .ignoresSafeArea(.all, edges: .bottom)
             }
+            .navigationTitle("History")
         }
-        .toolbar(.visible, for: .navigationBar)
-        .toolbar(.visible, for: .tabBar)
-        .navigationTitle("History")
         .onAppear(perform: initData)
     }
     
@@ -62,9 +63,10 @@ struct HistoryView: View {
             }
         var historyHeaders: [String: [History]] = [:]
         for date in uniqueDates {
-            historyHeaders[relativeDate(date: date ?? Date.now)] = history.filter {
-                Calendar.current.dateComponents([.day, .month, .year], from: $0.lastRead ?? Date.now) == Calendar.current.dateComponents([.day, .month, .year], from: date ?? Date.now)
-            }
+            historyHeaders[relativeDate(date: date ?? Date.now)] = history
+                .filter {
+                    Calendar.current.dateComponents([.day, .month, .year], from: $0.lastRead ?? Date.now) == Calendar.current.dateComponents([.day, .month, .year], from: date ?? Date.now)
+                }
         }
         return historyHeaders
     }

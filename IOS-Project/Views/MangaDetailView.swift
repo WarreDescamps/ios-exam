@@ -190,11 +190,9 @@ struct MangaDetailView: View {
     }
     
     private func sortArray<T>(array: [T], selector: (T) -> String, ascending: Bool) -> [T] {
-        let paddingLength = array.map({ selector($0) }).map({ $0.count }).max() ?? 0
-
         return array.sorted { (item1, item2) in
-            let value1 = selector(item1).leftPadding(toLength: paddingLength, withPad: "0")
-            let value2 = selector(item2).leftPadding(toLength: paddingLength, withPad: "0")
+            let value1 = Float(selector(item1)) ?? 0
+            let value2 = Float(selector(item2)) ?? 0
 
             if ascending {
                 return value1 < value2
