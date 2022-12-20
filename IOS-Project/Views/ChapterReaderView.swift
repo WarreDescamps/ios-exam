@@ -105,8 +105,23 @@ struct ChapterReaderView: View {
                             .labelStyle(.iconOnly)
                     }
                     Spacer()
-                    Text("Chapter \(chapter.number)\(chapter.title == nil ? "" : ": \(chapter.title!)")")
-                        .lineLimit(1)
+                    VStack {
+                        if let title = chapter.title {
+                            HStack {
+                                Text(title)
+                                    .lineLimit(1)
+                                Spacer()
+                            }
+                        }
+                        HStack {
+                            Text("Chapter \(chapter.number)")
+                                .lineLimit(1)
+                                .font(Font.headline.weight(.light))
+                            Spacer()
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 0)
                     Spacer()
                     Menu {
                         Button(action: { reader = .manga }) {
