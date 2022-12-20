@@ -32,6 +32,10 @@
 		698D694C2947D953006CEF60 /* ChapterReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698D694B2947D953006CEF60 /* ChapterReaderView.swift */; };
 		698E187929465FE40085CA05 /* WrappingHStack in Frameworks */ = {isa = PBXBuildFile; productRef = 698E187829465FE40085CA05 /* WrappingHStack */; };
 		698E187B2946723D0085CA05 /* Chapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698E187A2946723D0085CA05 /* Chapter.swift */; };
+		6992969429512683007BE357 /* HistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6992969329512683007BE357 /* HistoryManager.swift */; };
+		69929696295129AA007BE357 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69929695295129AA007BE357 /* History.swift */; };
+		699296982951368F007BE357 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 699296972951368F007BE357 /* HistoryView.swift */; };
+		6992969C295146F0007BE357 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6992969B295146F0007BE357 /* HistoryRow.swift */; };
 		69E4FCF52943CAD400E1486D /* MangaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E4FCF42943CAD400E1486D /* MangaDetailView.swift */; };
 		69E4FCF72943CB0700E1486D /* DebugConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E4FCF62943CB0700E1486D /* DebugConstants.swift */; };
 /* End PBXBuildFile section */
@@ -79,6 +83,10 @@
 		698D69492947B297006CEF60 /* ChapterRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterRow.swift; sourceTree = "<group>"; };
 		698D694B2947D953006CEF60 /* ChapterReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterReaderView.swift; sourceTree = "<group>"; };
 		698E187A2946723D0085CA05 /* Chapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chapter.swift; sourceTree = "<group>"; };
+		6992969329512683007BE357 /* HistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryManager.swift; sourceTree = "<group>"; };
+		69929695295129AA007BE357 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		699296972951368F007BE357 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		6992969B295146F0007BE357 /* HistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRow.swift; sourceTree = "<group>"; };
 		69E4FCF42943CAD400E1486D /* MangaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailView.swift; sourceTree = "<group>"; };
 		69E4FCF62943CB0700E1486D /* DebugConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +130,8 @@
 				698D69492947B297006CEF60 /* ChapterRow.swift */,
 				698D694B2947D953006CEF60 /* ChapterReaderView.swift */,
 				698CF1FE294D140200F5FE39 /* CustomTabView.swift */,
+				699296972951368F007BE357 /* HistoryView.swift */,
+				6992969B295146F0007BE357 /* HistoryRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -191,6 +201,7 @@
 				69765D95293A977200F662FC /* Manga.swift */,
 				69E4FCF62943CB0700E1486D /* DebugConstants.swift */,
 				698E187A2946723D0085CA05 /* Chapter.swift */,
+				69929695295129AA007BE357 /* History.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -202,6 +213,7 @@
 				698D14DC293E5C7C00BCC39D /* MangadexSdk.swift */,
 				69765D98293A98C600F662FC /* MangaManager.swift */,
 				3E6201D5294390E9007F60F7 /* SingletonManager.swift */,
+				6992969329512683007BE357 /* HistoryManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -359,9 +371,12 @@
 				698D14ED293E885300BCC39D /* Api.swift in Sources */,
 				698AFEED29414AB8009D11C7 /* MangaGridItem.swift in Sources */,
 				606DEB032926C04D0062C9BC /* ContentView.swift in Sources */,
+				6992969429512683007BE357 /* HistoryManager.swift in Sources */,
 				698D694C2947D953006CEF60 /* ChapterReaderView.swift in Sources */,
+				6992969C295146F0007BE357 /* HistoryRow.swift in Sources */,
 				698D14D6293E5A3700BCC39D /* DiscoveryView.swift in Sources */,
 				69765D99293A98C600F662FC /* MangaManager.swift in Sources */,
+				699296982951368F007BE357 /* HistoryView.swift in Sources */,
 				698D14EE293E885300BCC39D /* ApiTypes.swift in Sources */,
 				698E187B2946723D0085CA05 /* Chapter.swift in Sources */,
 				698D14EC293E885300BCC39D /* ApiSdk.swift in Sources */,
@@ -369,6 +384,7 @@
 				3E285F012930FF63003D0DA4 /* LibraryView.swift in Sources */,
 				698D694A2947B297006CEF60 /* ChapterRow.swift in Sources */,
 				69E4FCF72943CB0700E1486D /* DebugConstants.swift in Sources */,
+				69929696295129AA007BE357 /* History.swift in Sources */,
 				69765D96293A977200F662FC /* Manga.swift in Sources */,
 				606DEB012926C04D0062C9BC /* IOS_ProjectApp.swift in Sources */,
 				698CF1FF294D140200F5FE39 /* CustomTabView.swift in Sources */,

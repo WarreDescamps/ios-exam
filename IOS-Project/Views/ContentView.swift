@@ -31,6 +31,10 @@ struct ContentView: View {
                     .tabItem() {
                         Label("Discovery", systemImage: "globe")
                     }
+                HistoryView()
+                    .tabItem() {
+                        Label("History", systemImage: "memories")
+                    }
                 LibraryView()
                     .tabItem() {
                         Label("Library", systemImage: "books.vertical")
