@@ -44,7 +44,7 @@ class HistoryManager: ObservableObject {
                             }
                         }
                         else if histories.count == 0 {
-                            print("get history returned 0")
+                            self.history = nil
                         }
                         else if histories.count > 1 {
                             print("get history returned more than 1")
@@ -102,7 +102,7 @@ class HistoryManager: ObservableObject {
                         if documentIds.count == 1 {
                             if let id = documentIds.first {
                                 db.collection("UserHistory").document(id)
-                                    .setData(["LastRead": self.history?.lastRead ?? NSNull(), "Chapters": self.history?.chapters ?? [String]()])
+                                    .setData(["UserId": userId, "MangaId": manga.id, "LastRead": self.history?.lastRead ?? Date.now, "Chapters": self.history?.chapters ?? [String]()])
                                 if let error = error {
                                     print(error.localizedDescription)
                                     return
@@ -110,7 +110,7 @@ class HistoryManager: ObservableObject {
                             }
                         }
                         else if documentIds.count == 0 {
-                            self.addHistory(manga: manga, history: ["UserId": userId, "MangaId": manga.id, "LastRead": self.history?.lastRead ?? NSNull(), "Chapters": self.history?.chapters ?? [String]()])
+                            self.addHistory(manga: manga, history: ["UserId": userId, "MangaId": manga.id, "LastRead": self.history?.lastRead ?? Date.now, "Chapters": self.history?.chapters ?? [String]()])
                         }
                         else if documentIds.count > 1 {
                             print("update history returned more than 1")

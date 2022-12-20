@@ -185,6 +185,8 @@ struct MangaDetailView: View {
                 .labelStyle(.iconOnly)
             }
         }
+        .toolbar(.visible, for: .navigationBar)
+        .toolbar(.visible, for: .tabBar)
     }
     
     private func sortArray<T>(array: [T], selector: (T) -> String, ascending: Bool) -> [T] {

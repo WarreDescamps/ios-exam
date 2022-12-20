@@ -60,7 +60,7 @@ struct HistoryRow: View {
                                 }
                     )
                     .aspectRatio(0.66, contentMode: .fit)
-                    .frame(width: screenWidth * 0.12)
+                    .frame(width: screenWidth * 0.15)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .padding(.horizontal, 10)

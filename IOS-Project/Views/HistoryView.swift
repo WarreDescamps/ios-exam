@@ -33,12 +33,15 @@ struct HistoryView: View {
                 }
             }
         }
+        .toolbar(.visible, for: .navigationBar)
+        .toolbar(.visible, for: .tabBar)
         .navigationTitle("History")
         .onAppear(perform: initData)
     }
     
     private func initData() {
         mangadex.getMangaById(mangaIds: historyManager.fullHistory.map { $0.mangaId })
+        HistoryManager.shared.fetchFullHistory()
     }
     
     private func sortInHeaders() -> [String: [History]] {
@@ -71,7 +74,7 @@ struct HistoryView: View {
             let formatter = RelativeDateTimeFormatter()
             formatter.unitsStyle = .full
             let relativeDate = formatter.localizedString(for: date, relativeTo: Date.now)
-            if relativeDate.contains("hour") {
+            if relativeDate.contains("hour") || relativeDate.contains("minut") || relativeDate.contains("second") {
                 return "Today"
             }
             if relativeDate.contains("1 day ago") {

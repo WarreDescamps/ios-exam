@@ -11,6 +11,7 @@ struct ChapterReaderView: View {
     @StateObject var mangadex = SingletonManager.instance(key: "readerView")
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @Environment(\.colorScheme) var colorScheme
+    @State private var isDismiss = false
     @State private var focusMode = true
     @State private var page = 1
     @State private var screenWidth: CGFloat = 0
@@ -135,7 +136,10 @@ struct ChapterReaderView: View {
                         HStack {
                             Text("Chapter \(chapter.number)")
                                 .lineLimit(1)
-                                .font(.system(size: 14, weight: .light))
+                                .if(chapter.title != nil) { view in
+                                    view
+                                        .font(.system(size: 14, weight: .light))
+                                }
                             Spacer()
                         }
                     }
@@ -166,9 +170,10 @@ struct ChapterReaderView: View {
         .onAppear {
             SingletonManager.instance(key: "readerView").getPages(chapterId: chapter.id)
             HistoryManager.shared.getHistory(manga: manga)
+            HistoryManager.shared.fetchFullHistory()
         }
         .onChange(of: page) { newValue in
-            print(newValue)
+            updateHistory()
         }
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
@@ -187,9 +192,18 @@ struct ChapterReaderView: View {
         if page < mangadex.pages.count + 1 {
             page += 1
         }
+        updateHistory()
+    }
+    
+    private func updateHistory() {
         if page == mangadex.pages.count + 1 {
-            HistoryManager.shared.history = HistoryManager.shared.history ?? History(mangaId: manga.id, lastRead: Date.now, chapters: [chapter.number])
-            HistoryManager.shared.updateHistory(manga: manga)
+            if !(HistoryManager.shared.history?.chapters.contains(where: { $0 == chapter.number }) ?? false) {
+                if HistoryManager.shared.history == nil {
+                    HistoryManager.shared.history = History(mangaId: manga.id, lastRead: Date.now, chapters: [])
+                }
+                HistoryManager.shared.history?.chapters.append(chapter.number)
+                HistoryManager.shared.updateHistory(manga: manga)
+            }
         }
     }
     
