@@ -60,46 +60,57 @@ struct ChapterReaderView: View {
                             .frame(width: screenWidth * 0.25)
                     }
                 }
-            case .webtoon:
                 VStack {
                     Spacer()
-                    TabView(selection: $page) {
-                        pages(links: mangadex.pages)
-                            .frame(width: screenWidth, height: screenHeight)
-                            .rotationEffect(.degrees(-90))
-                            .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
-                    }
-                    .frame(width: screenWidth, height: screenHeight)
-                    .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
-                    .rotationEffect(.degrees(90))
-                    .offset(x: screenWidth)
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                    Spacer()
+                    Text("\(min(mangadex.pages.count - 1, max(0, page))) / \(mangadex.pages.count - 1)")
+                        .foregroundColor(.white)
+                        .padding(.bottom, 10)
                 }
-                VStack(spacing: 0) {
-                    Button(action: prevPage) {
-                        Rectangle()
-                            .foregroundColor(.clear)
-                            .frame(height: screenHeight * 0.2)
+            case .webtoon:
+                ScrollView {
+                    VStack(spacing: 0) {
+                        pages(links: mangadex.pages)
                     }
+                }
+                HStack {
                     Button(action: {focusMode.toggle()}) {
                         Rectangle()
                             .foregroundColor(.clear)
-                            .frame(height: screenHeight * 0.6)
-                    }
-                    Button(action: nextPage) {
-                        Rectangle()
-                            .foregroundColor(.clear)
-                            .frame(height: screenHeight * 0.2)
                     }
                 }
-            }
-            
-            VStack {
-                Spacer()
-                Text("\(min(mangadex.pages.count - 1, max(1, page))) / \(mangadex.pages.count - 1)")
-                    .foregroundColor(.white)
-                    .padding(.bottom, 10)
+//            case .manhwa:
+//                VStack {
+//                    Spacer()
+//                    TabView(selection: $page) {
+//                        pages(links: mangadex.pages)
+//                            .frame(width: screenWidth, height: screenHeight)
+//                            .rotationEffect(.degrees(-90))
+//                            .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
+//                    }
+//                    .frame(width: screenWidth, height: screenHeight)
+//                    .rotation3DEffect(.degrees(0), axis: (x: 1, y: 0, z: 0))
+//                    .rotationEffect(.degrees(90))
+//                    .offset(x: screenWidth)
+//                    .tabViewStyle(.page(indexDisplayMode: .never))
+//                    Spacer()
+//                }
+//                VStack(spacing: 0) {
+//                    Button(action: prevPage) {
+//                        Rectangle()
+//                            .foregroundColor(.clear)
+//                            .frame(height: screenHeight * 0.2)
+//                    }
+//                    Button(action: {focusMode.toggle()}) {
+//                        Rectangle()
+//                            .foregroundColor(.clear)
+//                            .frame(height: screenHeight * 0.6)
+//                    }
+//                    Button(action: nextPage) {
+//                        Rectangle()
+//                            .foregroundColor(.clear)
+//                            .frame(height: screenHeight * 0.2)
+//                    }
+//                }
             }
         }
         .ignoresSafeArea(.all, edges: focusMode ? .vertical : .horizontal)
@@ -124,7 +135,7 @@ struct ChapterReaderView: View {
                         HStack {
                             Text("Chapter \(chapter.number)")
                                 .lineLimit(1)
-                                .font(Font.headline.weight(.light))
+                                .font(.system(size: 14, weight: .light))
                             Spacer()
                         }
                     }
@@ -138,6 +149,9 @@ struct ChapterReaderView: View {
                         Button(action: { reader = .webtoon }) {
                             Text("Webtoon")
                         }
+//                        Button(action: { reader = .webtoon }) {
+//                            Text("Webtoon")
+//                        }
                     } label: {
                         Label("Reader Mode", systemImage: "book")
                             .labelStyle(.iconOnly)
@@ -197,6 +211,7 @@ struct ChapterReaderView: View {
         Text("First page")
             .foregroundColor(.white)
             .tag(0)
+            .padding()
         ForEach(links.enumerated().reversed().reversed(), id: \.offset) { index, url in
             AsyncImage(url: URL(string: links.isEmpty ? "" : url),
                               content: { image in
@@ -215,11 +230,13 @@ struct ChapterReaderView: View {
         Text("Last page")
             .foregroundColor(.white)
             .tag(links.count + 1)
+            .padding()
     }
     
     enum readerType {
         case webtoon
         case manga
+//        case manhwa
     }
 }
 
