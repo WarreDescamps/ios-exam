@@ -40,23 +40,22 @@ struct DiscoveryView: View {
                 .padding(.horizontal)
             }
             .navigationTitle("Discovery")
-            .if(selectionState == .selecting) { view in
-                view
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button(action: cancelSelection) {
-                                Label("Cancel", systemImage: "x.circle.fill")
-                            }
-                            .labelStyle(.titleAndIcon)
-                            .tint(.red)
+            .toolbar {
+                if(selectionState == .selecting) {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button(action: cancelSelection) {
+                            Label("Cancel", systemImage: "x.circle.fill")
                         }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: addManga) {
-                                Label("Add", systemImage: "plus.circle.fill")
-                            }
-                            .labelStyle(.titleAndIcon)
-                        }
+                        .labelStyle(.titleAndIcon)
+                        .tint(.red)
                     }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: addManga) {
+                            Label("Add", systemImage: "plus.circle.fill")
+                        }
+                        .labelStyle(.titleAndIcon)
+                    }
+                }
             }
         }
         .onChange(of: selectedManga.count) { newVal in
