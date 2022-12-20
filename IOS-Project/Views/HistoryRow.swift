@@ -28,7 +28,7 @@ struct HistoryRow: View {
             }
             NavigationLink {
                 if let chapter = mangadex.getChapter(mangaId: manga.id, chapterNumber: history.chapters.sorted().last ?? "1") {
-                    ChapterReaderView(chapter: chapter)
+                    ChapterReaderView(chapter: chapter, manga: manga)
                 }
                 else {
                     ZStack {

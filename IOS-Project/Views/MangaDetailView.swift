@@ -150,7 +150,7 @@ struct MangaDetailView: View {
                 LazyVStack {
                     ForEach(sortArray(array: mangadex.chapters, selector: { $0.number }, ascending: !sortIncreasing).enumerated().reversed(), id: \.element) { index, chapter in
                         NavigationLink {
-                            ChapterReaderView(chapter: chapter)
+                            ChapterReaderView(chapter: chapter, manga: manga)
                         } label: {
                             ChapterRow(chapter: chapter)
                         }

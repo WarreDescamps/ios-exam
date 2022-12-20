@@ -125,7 +125,7 @@ class HistoryManager: ObservableObject {
         let db = Firestore.firestore()
         
         db.collection("UserHistory")
-            .addDocument(data: ["MangaId": manga.id, "UserId": userId, "LastRead": NSNull(), "Chapters": [String]()]) { error in
+            .addDocument(data: ["MangaId": manga.id, "UserId": userId, "LastRead": Date.now, "Chapters": [String]()]) { error in
                 if let error = error {
                     print(error.localizedDescription)
                     return

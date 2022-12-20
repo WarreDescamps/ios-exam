@@ -12,11 +12,12 @@ struct ChapterReaderView: View {
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @Environment(\.colorScheme) var colorScheme
     @State private var focusMode = true
-    @State private var page = 0
+    @State private var page = 1
     @State private var screenWidth: CGFloat = 0
     @State private var screenHeight: CGFloat = 0
     @State private var reader: readerType = .manga
     @State var chapter: Chapter
+    let manga: Manga
     
     var body: some View {
         ZStack {
@@ -143,6 +144,7 @@ struct ChapterReaderView: View {
         }
         .onAppear {
             SingletonManager.instance(key: "readerView").getPages(chapterId: chapter.id)
+            HistoryManager.shared.getHistory(manga: manga)
         }
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
@@ -152,22 +154,49 @@ struct ChapterReaderView: View {
         if page > 0 {
             page -= 1
         }
-    }
-    
-    private func nextPage() {
-        if page < mangadex.pages.count - 1 {
-            page += 1
+        if page == 0 {
+            
         }
     }
     
-    private func pages(links: [String]) -> some View {
+    private func nextPage() {
+        if page < mangadex.pages.count + 1 {
+            page += 1
+        }
+        if page == mangadex.pages.count + 1 {
+            let history = HistoryManager.shared.history
+            if var history = history {
+                updateHistory(history)
+            }
+            else {
+                HistoryManager.shared.addHistory(manga: manga)
+                if let history = HistoryManager.shared.history {
+                    updateHistory(history)
+                }
+            }
+        }
+    }
+    
+    private func updateHistory(_ history: History) {
+        var history = history
+        if !history.chapters.contains(where: { $0 == chapter.number }) {
+            history.chapters.append(chapter.number)
+            HistoryManager.shared.history = history
+            HistoryManager.shared.updateHistory(manga: manga)
+        }
+    }
+    
+    @ViewBuilder private func pages(links: [String]) -> some View {
+        Text("First page")
+            .foregroundColor(.white)
+            .tag(0)
         ForEach(links.enumerated().reversed().reversed(), id: \.offset) { index, url in
             AsyncImage(url: URL(string: links.isEmpty ? "" : url),
                               content: { image in
                                    image
                                        .resizable()
                                        .aspectRatio(contentMode: .fit)
-                                       .tag(index)
+                                       .tag(index + 1)
                                },
                               placeholder: {
                        ZStack {
@@ -176,6 +205,9 @@ struct ChapterReaderView: View {
                        }
             })
         }
+        Text("Last page")
+            .foregroundColor(.white)
+            .tag(links.count + 1)
     }
     
     enum readerType {
@@ -199,6 +231,6 @@ struct ChapterReaderView_PreviewContainer: View {
     }
     
     var body: some View {
-        ChapterReaderView(chapter: DebugConstants.currentChapter)
+        ChapterReaderView(chapter: DebugConstants.currentChapter, manga: DebugConstants.worldTrigger)
     }
 }
