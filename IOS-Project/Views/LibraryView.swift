@@ -42,7 +42,7 @@ struct LibraryView_Previews: PreviewProvider {
 
 struct LibraryView_PreviewContainer: View {
     init() {
-        MangaManager.shared.login(userId: DebugConstants.userId)
+        _ = SingletonManager.userInstance(userId: DebugConstants.userId)
     }
     
     var body: some View {

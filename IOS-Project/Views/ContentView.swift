@@ -113,7 +113,7 @@ struct ContentView: View {
             .onAppear {
                 Auth.auth().addStateDidChangeListener { auth, user in
                     if user != nil {
-                        MangaManager.shared.login(userId: user?.uid as? String ?? "")
+                        _ = SingletonManager.userInstance(userId: user?.uid as? String ?? "")
                         isLoggedIn.toggle()
                     }
                 }

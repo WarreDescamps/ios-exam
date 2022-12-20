@@ -9,15 +9,10 @@ import Foundation
 import Firebase
 
 class MangaManager {
-    var userId: String = ""
     static let shared = MangaManager()
     
-    func login(userId: String) {
-        MangaManager.shared.userId = userId
-    }
-    
     func getManga(userId: String? = nil, completion: @escaping (([String]) -> Void)) {
-        let userId = userId ?? self.userId
+        let userId = userId ?? SingletonManager.userInstance() ?? ""
         let db = Firestore.firestore()
         
         db.collection("UserManga")
@@ -42,7 +37,7 @@ class MangaManager {
     }
     
     func addManga(userId: String? = nil, manga: Manga){
-        let userId = userId ?? self.userId
+        let userId = userId ?? SingletonManager.userInstance() ?? ""
         let db = Firestore.firestore()
         
         db.collection("UserManga")
@@ -55,7 +50,7 @@ class MangaManager {
     }
     
     func deleteManga(userId: String? = nil, mangaId: String) {
-        let userId = userId ?? self.userId
+        let userId = userId ?? SingletonManager.userInstance() ?? ""
         let db = Firestore.firestore()
         
         // get all manga in
