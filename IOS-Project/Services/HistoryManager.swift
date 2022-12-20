@@ -110,7 +110,7 @@ class HistoryManager: ObservableObject {
                             }
                         }
                         else if documentIds.count == 0 {
-                            print("update history returned 0")
+                            self.addHistory(manga: manga, history: ["UserId": userId, "MangaId": manga.id, "LastRead": self.history?.lastRead ?? NSNull(), "Chapters": self.history?.chapters ?? [String]()])
                         }
                         else if documentIds.count > 1 {
                             print("update history returned more than 1")
@@ -120,12 +120,12 @@ class HistoryManager: ObservableObject {
             }
     }
     
-    func addHistory(userId: String? = nil, manga: Manga) {
+    func addHistory(userId: String? = nil, manga: Manga, history: [String: Any]? = nil) {
         let userId = userId ?? SingletonManager.userInstance() ?? ""
         let db = Firestore.firestore()
         
         db.collection("UserHistory")
-            .addDocument(data: ["MangaId": manga.id, "UserId": userId, "LastRead": Date.now, "Chapters": [String]()]) { error in
+            .addDocument(data: history ?? ["MangaId": manga.id, "UserId": userId, "LastRead": Date.now, "Chapters": [String]()]) { error in
                 if let error = error {
                     print(error.localizedDescription)
                     return

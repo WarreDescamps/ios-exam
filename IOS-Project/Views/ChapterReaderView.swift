@@ -27,7 +27,7 @@ struct ChapterReaderView: View {
                 Color.clear
                     .onAppear {
                         screenWidth = geo.size.width
-                        screenHeight = geo.size.height
+                        screenHeight = geo.size.height - geo.safeAreaInsets.top
                     }
             }
             
@@ -62,7 +62,7 @@ struct ChapterReaderView: View {
                 }
                 VStack {
                     Spacer()
-                    Text("\(min(mangadex.pages.count - 1, max(0, page))) / \(mangadex.pages.count - 1)")
+                    Text("\(min(mangadex.pages.count, max(0, page))) / \(mangadex.pages.count)")
                         .foregroundColor(.white)
                         .padding(.bottom, 10)
                 }
@@ -149,8 +149,8 @@ struct ChapterReaderView: View {
                         Button(action: { reader = .webtoon }) {
                             Text("Webtoon")
                         }
-//                        Button(action: { reader = .webtoon }) {
-//                            Text("Webtoon")
+//                        Button(action: { reader = .manhwa }) {
+//                            Text("Manhwa")
 //                        }
                     } label: {
                         Label("Reader Mode", systemImage: "book")
@@ -166,6 +166,9 @@ struct ChapterReaderView: View {
         .onAppear {
             SingletonManager.instance(key: "readerView").getPages(chapterId: chapter.id)
             HistoryManager.shared.getHistory(manga: manga)
+        }
+        .onChange(of: page) { newValue in
+            print(newValue)
         }
         .toolbar(.hidden, for: .navigationBar)
         .toolbar(.hidden, for: .tabBar)
@@ -185,24 +188,7 @@ struct ChapterReaderView: View {
             page += 1
         }
         if page == mangadex.pages.count + 1 {
-            let history = HistoryManager.shared.history
-            if var history = history {
-                updateHistory(history)
-            }
-            else {
-                HistoryManager.shared.addHistory(manga: manga)
-                if let history = HistoryManager.shared.history {
-                    updateHistory(history)
-                }
-            }
-        }
-    }
-    
-    private func updateHistory(_ history: History) {
-        var history = history
-        if !history.chapters.contains(where: { $0 == chapter.number }) {
-            history.chapters.append(chapter.number)
-            HistoryManager.shared.history = history
+            HistoryManager.shared.history = HistoryManager.shared.history ?? History(mangaId: manga.id, lastRead: Date.now, chapters: [chapter.number])
             HistoryManager.shared.updateHistory(manga: manga)
         }
     }
@@ -212,13 +198,13 @@ struct ChapterReaderView: View {
             .foregroundColor(.white)
             .tag(0)
             .padding()
-        ForEach(links.enumerated().reversed().reversed(), id: \.offset) { index, url in
-            AsyncImage(url: URL(string: links.isEmpty ? "" : url),
+        ForEach(links.enumerated().map { Link(index: $0 + 1, url: $1) }) { link in
+            AsyncImage(url: URL(string: links.isEmpty ? "" : link.url),
                               content: { image in
                                    image
                                        .resizable()
                                        .aspectRatio(contentMode: .fit)
-                                       .tag(index + 1)
+                                       .tag(link.index)
                                },
                               placeholder: {
                        ZStack {
@@ -231,6 +217,15 @@ struct ChapterReaderView: View {
             .foregroundColor(.white)
             .tag(links.count + 1)
             .padding()
+    }
+    
+    struct Link: Identifiable, Hashable {
+        var id: Int {
+            index
+        }
+        
+        var index: Int
+        var url: String
     }
     
     enum readerType {
