@@ -21,7 +21,7 @@ struct MangaDetailView: View {
     @State private var screenHeight: CGFloat = 0
     @State private var sortIncreasing = false
     
-    init(manga: Manga, onDismiss: @escaping () -> Void, parentTitle: String = "") {
+    init(manga: Manga, onDismiss: @escaping () -> Void = {}, parentTitle: String = "") {
         self.manga = manga
         self.onDismiss = onDismiss
         self.parentTitle = parentTitle
