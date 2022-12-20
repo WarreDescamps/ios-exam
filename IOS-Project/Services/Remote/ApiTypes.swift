@@ -142,7 +142,7 @@ extension Api {
             case mangaById(mangaIds: [String])
             case cover(id: String)
             case authors(ids: [String])
-            case chapters(id: String, page: Int = 0)
+            case chapters(id: String, page: Int = 0, number: String? = nil)
             case pages(id: String)
             
             var url: URL {
@@ -196,7 +196,7 @@ extension Api {
                     else {
                         components.queryItems = [URLQueryItem(name: "limit", value: "0")]
                     }
-                case .chapters(let id, let page):
+                case .chapters(let id, let page, let number):
                     components.path = "/chapter"
                     components.queryItems = [
                         URLQueryItem(name: "order[chapter]", value: "asc"),
@@ -205,6 +205,9 @@ extension Api {
                         URLQueryItem(name: "offset", value: "\(page * 100)"),
                         URLQueryItem(name: "translatedLanguage[]", value: "en")
                     ]
+                    if let number = number {
+                        components.queryItems?.append(URLQueryItem(name: "chapter", value: number))
+                    }
                 case .pages(let id):
                     components.path = "/at-home/server/\(id)"
                 }

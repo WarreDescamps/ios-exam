@@ -15,6 +15,23 @@ class MangadexSdk: ObservableObject {
     private var mangaTotal = 0
     private var lastQuery: String? = nil
     
+    private func filterChapter(_ mangadexResponse: [Api.Types.Response.MangadexChapter.Data]) -> Chapter? {
+        let min = mangadexResponse.min { a, b in Float(a.attributes.chapter ?? "0") ?? .infinity < Float(b.attributes.chapter ?? "0") ?? .infinity }
+        if let min = min {
+            let allPossibleOfMin = mangadexResponse.filter { data in data.attributes.chapter == min.attributes.chapter && data.attributes.pages > 0 }
+            let maxOfMin = allPossibleOfMin.max { a, b in a.attributes.updatedAt < b.attributes.updatedAt }
+            if let maxOfMin = maxOfMin {
+                if self.chapters.allSatisfy({ chapter in chapter.id != maxOfMin.id }) {
+                    return Chapter(id: maxOfMin.id,
+                                                 number: maxOfMin.attributes.chapter ?? "0",
+                                                 title: maxOfMin.attributes.title,
+                                                 updatedAt: maxOfMin.attributes.updatedAt)
+                }
+            }
+        }
+        return nil
+    }
+    
     func getPages(chapterId: String) {
         pages.removeAll()
         
@@ -34,6 +51,34 @@ class MangadexSdk: ObservableObject {
             }
     }
     
+    private var finished = false
+    func getChapter(mangaId: String, chapterNumber: String) -> Chapter? {
+        var chapter: Chapter? = nil
+        self.finished = false
+        
+        Api.Sdk.shared
+            .get(.chapters(id: mangaId, number: chapterNumber)) { (result: Result<Api.Types.Response.MangadexChapter, Api.Types.Error>) in
+                switch result {
+                case .success(let success):
+                    if let internalChapter = self.filterChapter(success.data) {
+                        chapter = internalChapter
+                    }
+                    self.finished = true
+                case .failure(let failure):
+                    print(failure.localizedDescription)
+                }
+            }
+        
+        _ = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false) { _ in
+            self.finished = true
+        }
+        
+        while !self.finished {
+            
+        }
+        return chapter
+    }
+    
     func getChapters(mangaId: String, page: Int = 0) {
         if page == 0 {
             self.chapters.removeAll()
@@ -46,16 +91,9 @@ class MangadexSdk: ObservableObject {
                     case .success(let success):
                         var data = success.data
                         while data.count > 0 {
-                            let min = data.min { a, b in Float(a.attributes.chapter ?? "0") ?? .infinity < Float(b.attributes.chapter ?? "0") ?? .infinity }
-                            if let min = min {
-                                let allPossibleOfMin = data.filter { data in data.attributes.chapter == min.attributes.chapter && data.attributes.pages > 0 }
-                                let maxOfMin = allPossibleOfMin.max { a, b in a.attributes.updatedAt < b.attributes.updatedAt }
-                                if let maxOfMin = maxOfMin {
-                                    if self.chapters.allSatisfy({ chapter in chapter.id != maxOfMin.id }) {
-                                        self.chapters.append(Chapter(id: maxOfMin.id, number: maxOfMin.attributes.chapter ?? "0", title: maxOfMin.attributes.title, updatedAt: maxOfMin.attributes.updatedAt))
-                                    }
-                                }
-                                data.removeAll { dataInArr in dataInArr.attributes.chapter == min.attributes.chapter }
+                            if let chapter = self.filterChapter(data) {
+                                self.chapters.append(chapter)
+                                data.removeAll { dataInArr in dataInArr.attributes.chapter == chapter.number }
                             }
                             else {
                                 break
