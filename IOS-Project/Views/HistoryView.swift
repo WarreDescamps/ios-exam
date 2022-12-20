@@ -28,8 +28,8 @@ struct HistoryView: View {
                                 HistoryRow(manga: manga, history: history)
                             }
                         }
-                        Color.clear
                     }
+                    Color.clear
                 }
                 .toolbar(.visible, for: .navigationBar)
                 .toolbar(.visible, for: .tabBar)
