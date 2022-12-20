@@ -94,6 +94,13 @@ struct ChapterReaderView: View {
                     }
                 }
             }
+            
+            VStack {
+                Spacer()
+                Text("\(min(mangadex.pages.count - 1, max(1, page))) / \(mangadex.pages.count - 1)")
+                    .foregroundColor(.white)
+                    .padding(.bottom, 10)
+            }
         }
         .ignoresSafeArea(.all, edges: focusMode ? .vertical : .horizontal)
         .overlay(alignment: .topLeading) {
