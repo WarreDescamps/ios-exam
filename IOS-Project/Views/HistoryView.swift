@@ -31,12 +31,12 @@ struct HistoryView: View {
                     }
                     Color.clear
                 }
-                .toolbar(.visible, for: .navigationBar)
-                .toolbar(.visible, for: .tabBar)
                 .ignoresSafeArea(.all, edges: .bottom)
             }
             .navigationTitle("History")
         }
+        .toolbar(.automatic, for: .navigationBar)
+        .toolbar(.automatic, for: .tabBar)
         .onAppear(perform: initData)
     }
     
