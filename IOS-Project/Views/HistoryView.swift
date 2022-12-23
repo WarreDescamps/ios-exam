@@ -47,7 +47,7 @@ struct HistoryView: View {
     
     private func sortInHeaders() -> [String: [History]] {
         let history = historyManager.fullHistory
-            .sorted(by: { item1, item2 in item1.lastRead ?? Date.now > item2.lastRead ?? Date.now })
+//            .sorted(by: { ($0.lastRead ?? Date.now).compare($1.lastRead ?? Date.now) == .orderedDescending })
         var uniqueDates = [Date?]()
         uniqueDates = history
             .map {
@@ -68,6 +68,7 @@ struct HistoryView: View {
                     Calendar.current.dateComponents([.day, .month, .year], from: $0.lastRead ?? Date.now) == Calendar.current.dateComponents([.day, .month, .year], from: date ?? Date.now)
                 }
         }
+        historyHeaders = Dictionary<String, [History]>(uniqueKeysWithValues: historyHeaders.sorted(by: { ($0.value.first?.lastRead ?? Date.now).compare($1.value.first?.lastRead ?? Date.now) == .orderedAscending }).map({ ($0.key, $0.value) }))
         return historyHeaders
     }
     
